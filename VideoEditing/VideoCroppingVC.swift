@@ -526,6 +526,26 @@ class VideoCroppingVC: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         guard let asset = currentTrimmedAsset else { return }
         
+        let loadingAlert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.startAnimating()
+        
+        loadingAlert.view.addSubview(loadingIndicator)
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: loadingAlert.view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: loadingAlert.view.centerYAnchor),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: 50),
+            loadingIndicator.widthAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        loadingAlert.view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        loadingAlert.view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        present(loadingAlert, animated: true, completion: nil)
+        
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
@@ -540,25 +560,34 @@ class VideoCroppingVC: UIViewController, UIImagePickerControllerDelegate, UINavi
             }
         }
         
+        // કંપોઝિશન બનાવવું
         let composition = AVMutableComposition()
         
+        // વિડિયો ટ્રેક માટે
         guard let videoTrack = asset.tracks(withMediaType: .video).first,
               let compositionVideoTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
-            showAlert(title: "Error", message: "Could not create composition tracks")
+            showAlert(title: "Error", message: "Could not create video tracks")
+            loadingAlert.dismiss(animated: true, completion: nil)
             return
         }
         
         let assetDuration = asset.duration
-        
-        
         let timeRange = CMTimeRangeMake(start: .zero, duration: assetDuration)
         
         do {
+            // વિડિયો ટ્રેક ઇન્સર્ટ કરવું
             try compositionVideoTrack.insertTimeRange(timeRange, of: videoTrack, at: .zero)
             
+            // ઓડિયો ટ્રેક માટે - આ ભાગ ઉમેરવાથી ઓડિયો જળવાઈ રહેશે
+            let audioTracks = asset.tracks(withMediaType: .audio)
+            for audioTrack in audioTracks {
+                let compositionAudioTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid)
+                try compositionAudioTrack?.insertTimeRange(timeRange, of: audioTrack, at: .zero)
+            }
             
         } catch {
             showAlert(title: "Error", message: "Could not create composition: \(error.localizedDescription)")
+            loadingAlert.dismiss(animated: true, completion: nil)
             return
         }
         
@@ -576,6 +605,7 @@ class VideoCroppingVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
             showAlert(title: "Error", message: "Could not create export session")
+            loadingAlert.dismiss(animated: true, completion: nil)
             return
         }
         
@@ -583,12 +613,9 @@ class VideoCroppingVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         exportSession.outputFileType = .mp4
         exportSession.videoComposition = videoComposition
         
-        let alert = UIAlertController(title: "Saving Video", message: "Please wait...", preferredStyle: .alert)
-        present(alert, animated: true)
-        
         exportSession.exportAsynchronously {
             DispatchQueue.main.async {
-                alert.dismiss(animated: true) {
+                loadingAlert.dismiss(animated: true) {
                     switch exportSession.status {
                     case .completed:
                         self.saveVideoToLibrary(outputURL)
@@ -638,5 +665,4 @@ class VideoCroppingVC: UIViewController, UIImagePickerControllerDelegate, UINavi
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
-    
 }
