@@ -222,28 +222,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kvd-CV-IV9">
                                 <rect key="frame" x="18" y="760" width="359" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFV-wQ-7af">
-                                        <rect key="frame" x="0.0" y="0.0" width="44.333333333333336" height="50"/>
-                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="crop" catalog="system"/>
-                                        <connections>
-                                            <action selector="cropButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="bWo-qM-L7R"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ga8-ft-TQ3">
-                                        <rect key="frame" x="52.333333333333329" y="0.0" width="44.666666666666671" height="50"/>
-                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="timer.circle" catalog="system"/>
-                                        <connections>
-                                            <action selector="timerButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="ALd-Bz-KI5"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jH-ef-g7h">
-                                        <rect key="frame" x="105" y="0.0" width="44.333333333333343" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
                                         <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -252,35 +232,8 @@
                                             <action selector="musicButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="laH-Kl-6ah"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dm-Kh-UPe">
-                                        <rect key="frame" x="157.33333333333334" y="0.0" width="44.333333333333343" height="50"/>
-                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="camera.filters" catalog="system"/>
-                                        <connections>
-                                            <action selector="filterButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="kI8-w4-igK"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mXw-Xg-93B">
-                                        <rect key="frame" x="209.66666666666666" y="0.0" width="44.333333333333343" height="50"/>
-                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="t.square.fill" catalog="system"/>
-                                        <connections>
-                                            <action selector="textButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="QWG-L6-4vL"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M3I-sO-Yrg">
-                                        <rect key="frame" x="262" y="0.0" width="44.666666666666686" height="50"/>
-                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="figure.highintensity.intervaltraining.circle" catalog="system"/>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hru-eV-7eX">
-                                        <rect key="frame" x="314.66666666666669" y="0.0" width="44.333333333333314" height="50"/>
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
                                         <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -328,14 +281,9 @@
                     <connections>
                         <outlet property="addVideoButton" destination="eaL-DT-8mB" id="zDq-dH-igX"/>
                         <outlet property="buttonStackView" destination="kvd-CV-IV9" id="PMA-VB-Enr"/>
-                        <outlet property="cropButton" destination="xFV-wQ-7af" id="cXd-vL-wia"/>
-                        <outlet property="filterButton" destination="1dm-Kh-UPe" id="ZS0-d8-mBe"/>
                         <outlet property="musicButton" destination="7jH-ef-g7h" id="L6r-2T-UOd"/>
                         <outlet property="muteButton" destination="cWI-OG-hUk" id="ZzE-vG-k3i"/>
                         <outlet property="saveButton" destination="hru-eV-7eX" id="sQF-jf-BfR"/>
-                        <outlet property="stickerButton" destination="M3I-sO-Yrg" id="h8L-6A-FcA"/>
-                        <outlet property="textButton" destination="mXw-Xg-93B" id="lhn-BR-MhB"/>
-                        <outlet property="timerButton" destination="ga8-ft-TQ3" id="Va0-Vd-heO"/>
                         <outlet property="videoView" destination="uPj-hy-qJP" id="Fcf-Zi-eMm"/>
                     </connections>
                 </viewController>
@@ -521,7 +469,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F7D-aK-Y25" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6730.5343511450383" y="-4.2253521126760569"/>
+            <point key="canvasLocation" x="1844" y="708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dN1-Sw-EZZ">
@@ -539,7 +487,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wt3-Wg-1yB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5826.7175572519081" y="-4.2253521126760569"/>
+            <point key="canvasLocation" x="1083" y="708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T91-Qp-jWj">
@@ -630,7 +578,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GFr-yd-5H2" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8295" y="-4"/>
+            <point key="canvasLocation" x="3547" y="708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tLl-YC-zYW">
@@ -648,7 +596,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d37-B0-eql" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7392" y="-4"/>
+            <point key="canvasLocation" x="2648" y="709"/>
         </scene>
         <!--Video Sticker-->
         <scene sceneID="Dor-Se-ho1">
@@ -720,7 +668,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hmq-fb-nEx" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9863" y="-4"/>
+            <point key="canvasLocation" x="5134" y="708"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zvJ-UM-JKn">
@@ -738,7 +686,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Lx-tT-XiE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9022" y="-4"/>
+            <point key="canvasLocation" x="4228" y="708"/>
         </scene>
     </scenes>
     <resources>

@@ -553,11 +553,6 @@ class VideoTextVC: UIViewController, UIImagePickerControllerDelegate, UINavigati
                     DispatchQueue.main.async {
                         if success {
                             self.showAlert(title: "Success", message: "Video saved to your photo library")
-                            do {
-                                try FileManager.default.removeItem(at: videoURL)
-                            } catch {
-                                print("Could not remove temp file: \(error)")
-                            }
                         } else {
                             if let error = error {
                                 self.showAlert(title: "Save Failed", message: error.localizedDescription)

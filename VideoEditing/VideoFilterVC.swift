@@ -9,24 +9,12 @@ import UIKit
 import AVFoundation
 import Photos
 
-class FilterData {
-    static let shared = FilterData()
-    var currentFilterInfo: [String: Any]?
-    private init() {}
-}
-
 class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var addVideoButton: UIBarButtonItem!
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
-    
-    private let filters = ["Original", "Vivid", "Dramatic", "Mono", "Nashville", "Toaster", "1977", "Noir", "Comic", "Crystallize", "Bloom", "Pixellate", "Blur", "Sepia", "Fade", "Sharpen", "HDR", "Vignette", "Tonal", "Dot Matrix", "Edge Work", "X-Ray", "Posterize"]
-    
-    private var currentFilter: String = "Original"
-    private var compositionFilter: CIFilter?
-    private var filteredAsset: AVAsset?
     
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
@@ -35,6 +23,9 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     private var videoLooper: Any?
     private var currentTrimmedAsset: AVAsset?
     private var currentVideoURL: URL?
+    private var originalVideoURL: URL?
+    
+    private let filters = ["Original", "Vivid", "Dramatic", "Mono", "Nashville", "Toaster", "1977", "Noir", "Sepia", "Fade", "Sharpen", "Vignette", "Tonal"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,6 +131,10 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         
         currentVideoURL = url
         currentTrimmedAsset = AVAsset(url: url)
+        
+        if originalVideoURL == nil {
+            originalVideoURL = url
+        }
         
         player = AVPlayer(url: url)
         playerLayer = AVPlayerLayer(player: player)
@@ -247,6 +242,7 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         if let videoURL = info[.mediaURL] as? URL {
             picker.dismiss(animated: true) { [weak self] in
                 self?.setupVideoPlayer(with: videoURL)
+                self?.originalVideoURL = videoURL
                 self?.filterButton.isEnabled = true
                 self?.saveButton.isEnabled = true
                 self?.filterButton.alpha = 1.0
@@ -275,16 +271,17 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func filterButtonTapped(_ sender: UIButton) {
-        let alertController = UIAlertController(title: "Select Filter", message: nil, preferredStyle: .actionSheet)
+        // ખાતરી કરો કે વિડિઓ સિલેક્ટ કરવામાં આવ્યો છે
+        guard let asset = currentTrimmedAsset else {
+            showAlert(title: "Error", message: "Please first select video!")
+            return
+        }
         
-        for filter in filters {
-            let action = UIAlertAction(title: filter, style: .default) { [weak self] _ in
-                guard let self = self else { return }
-                self.currentFilter = filter
-                
-                if let videoURL = self.currentVideoURL {
-                    self.applyFilter(to: videoURL, filterName: filter)
-                }
+        let alertController = UIAlertController(title: "Filter Select", message: nil, preferredStyle: .actionSheet)
+        
+        for filterName in filters {
+            let action = UIAlertAction(title: filterName, style: .default) { [weak self] _ in
+                self?.applyFilter(filterName, to: asset)
             }
             alertController.addAction(action)
         }
@@ -292,11 +289,28 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         
-        present(alertController, animated: true)
+        present(alertController, animated: true, completion: nil)
     }
     
-    private func applyFilter(to videoURL: URL, filterName: String) {
-        let loadingAlert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+    private func applyFilter(_ filterName: String, to asset: AVAsset) {
+        // જો "Original" ફિલ્ટર પસંદ કર્યું હોય તો, મૂળ વિડિઓ પ્લે કરો
+        if filterName == "Original" {
+            if let currentVideoURL = originalVideoURL {
+                setupVideoPlayer(with: currentVideoURL)
+            }
+            return
+        }
+        
+        // મૂળ વિડિઓ અસેટ મેળવો, જે મૂળ કેમેરા/ગેલેરીથી પસંદ કરેલો છે
+        guard let originalVideoURL = self.originalVideoURL else {
+            showAlert(title: "ભૂલ", message: "મૂળ વિડિઓ મળ્યો નથી!")
+            return
+        }
+        
+        // અહીં મૂળ વિડિઓ અસેટનો ઉપયોગ કરો, નહિં કે વર્તમાન ફિલ્ટર કરેલા અસેટનો
+        let originalAsset = AVAsset(url: originalVideoURL)
+        
+        let loadingAlert = UIAlertController(title: "ફિલ્ટર લાગુ થઈ રહ્યું છે", message: "મહેરબાની કરીને રાહ જુઓ...", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(style: .large)
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -319,424 +333,192 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-            if filterName == "Original" {
-                self.filteredAsset = AVAsset(url: videoURL)
-                self.currentTrimmedAsset = self.filteredAsset
-                
-                DispatchQueue.main.async {
-                    loadingAlert.dismiss(animated: true) {
-                        self.setupVideoPlayer(with: videoURL)
-                    }
-                }
-                return
+            // ફિલ્ટર પ્રોસેસિંગ માટે વધારે મેમરી ફાળવો
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let outputURL = documentsDirectory.appendingPathComponent("FilteredVideo_\(UUID().uuidString).mp4")
+            
+            if FileManager.default.fileExists(atPath: outputURL.path) {
+                try? FileManager.default.removeItem(at: outputURL)
             }
             
-            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let outputURL = documentsDirectory.appendingPathComponent("Filtered_temp_\(UUID().uuidString).mp4")
-            
-            let asset = AVAsset(url: videoURL)
-            
+            // કમ્પોઝિશન બનાવો
             let composition = AVMutableComposition()
             
-            guard let videoTrack = asset.tracks(withMediaType: .video).first,
-                  let compositionVideoTrack = composition.addMutableTrack(
-                    withMediaType: .video,
-                    preferredTrackID: kCMPersistentTrackID_Invalid) else {
+            // પ્રથમ વિડિઓ ટ્રેક મેળવવાનો પ્રયાસ - મૂળ વિડિઓ અસેટથી
+            guard let videoTrack = originalAsset.tracks(withMediaType: .video).first,
+                  let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
                 DispatchQueue.main.async {
                     loadingAlert.dismiss(animated: true) {
-                        self.showAlert(title: "Error", message: "Could not create composition")
+                        self.showAlert(title: "ભૂલ", message: "વિડિઓ ટ્રેક મેળવવામાં નિષ્ફળ!")
                     }
                 }
                 return
             }
             
-            var compositionAudioTrack: AVMutableCompositionTrack?
-            if let audioTrack = asset.tracks(withMediaType: .audio).first {
-                compositionAudioTrack = composition.addMutableTrack(
-                    withMediaType: .audio,
-                    preferredTrackID: kCMPersistentTrackID_Invalid)
+            // ઓડિઓ ટ્રેક ઉમેરો જો ઉપલબ્ધ હોય તો - મૂળ વિડિઓ અસેટથી
+            do {
+                if let audioTrack = originalAsset.tracks(withMediaType: .audio).first,
+                   let audioCompositionTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+                    let timeRange = CMTimeRange(start: .zero, duration: originalAsset.duration)
+                    try audioCompositionTrack.insertTimeRange(timeRange, of: audioTrack, at: .zero)
+                }
+            } catch {
+                print("ઓડિઓ ટ્રેક કોપી કરવામાં ભૂલ: \(error)")
+                // ઓડિઓ ભૂલ છતાં ચાલુ રાખવું, કારણ કે આપણે માત્ર વિડિઓ પર ફિલ્ટર લગાવવા માંગીએ છીએ
             }
             
             do {
-                let timeRange = CMTimeRange(start: .zero, duration: asset.duration)
-                try compositionVideoTrack.insertTimeRange(timeRange, of: videoTrack, at: .zero)
-                if let audioTrack = asset.tracks(withMediaType: .audio).first,
-                   let compositionAudioTrack = compositionAudioTrack {
-                    try compositionAudioTrack.insertTimeRange(timeRange, of: audioTrack, at: .zero)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    loadingAlert.dismiss(animated: true) {
-                        self.showAlert(title: "Error", message: "Failed to create composition: \(error.localizedDescription)")
-                    }
-                }
-                return
-            }
-            
-            let videoComposition = AVMutableVideoComposition(propertiesOf: asset)
-            
-            let filter = self.getCIFilter(for: filterName)
-            self.compositionFilter = filter
-            
-            let ciContext = CIContext()
-            
-            videoComposition.renderSize = videoTrack.naturalSize
-            videoComposition.frameDuration = CMTimeMake(value: 1, timescale: 30)
-            
-            videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(
-                additionalLayer: CALayer(),
-                asTrackID: kCMPersistentTrackID_Invalid)
-            
-            videoComposition.customVideoCompositorClass = CIFilterVideoCompositor.self
-            
-            let instruction = AVMutableVideoCompositionInstruction()
-            instruction.timeRange = CMTimeRange(start: .zero, duration: composition.duration)
-            
-            let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: compositionVideoTrack)
-            
-            var transform = videoTrack.preferredTransform
-            let videoInfo = orientation(from: transform)
-            
-            var videoSize = videoTrack.naturalSize
-            if videoInfo.isPortrait {
+                // વિડિઓ ટ્રેક ઉમેરો
+                let timeRange = CMTimeRange(start: .zero, duration: originalAsset.duration)
+                try compositionTrack.insertTimeRange(timeRange, of: videoTrack, at: .zero)
                 
-                videoSize = CGSize(width: videoSize.height, height: videoSize.width)
-                
-                transform = CGAffineTransform(rotationAngle: .pi/2)
-                transform = transform.translatedBy(x: videoSize.width, y: 0)
-            }
-            
-            layerInstruction.setTransform(transform, at: .zero)
-            instruction.layerInstructions = [layerInstruction]
-            videoComposition.instructions = [instruction]
-            
-            if let filterDescription = self.getFilterCompositorInfo(for: filterName) {
-                FilterData.shared.currentFilterInfo = filterDescription
-            }
-            
-            guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
-                DispatchQueue.main.async {
-                    loadingAlert.dismiss(animated: true) {
-                        self.showAlert(title: "Error", message: "Could not create export session")
+                // ફિલ્ટર બનાવો
+                guard let filter = self.createFilter(name: filterName) else {
+                    DispatchQueue.main.async {
+                        loadingAlert.dismiss(animated: true) {
+                            self.showAlert(title: "ભૂલ", message: "ફિલ્ટર બનાવી શકાયું નથી!")
+                        }
                     }
+                    return
                 }
-                return
-            }
-            
-            exportSession.outputURL = outputURL
-            exportSession.outputFileType = .mp4
-            exportSession.videoComposition = videoComposition
-            
-            exportSession.exportAsynchronously {
+                
+                // વિડિઓ કમ્પોઝિશન બનાવો જે ફિલ્ટર લાગુ કરશે
+                let videoComposition = AVMutableVideoComposition(asset: originalAsset) { [weak filter] request in
+                    guard let filter = filter else {
+                        request.finish(with: request.sourceImage, context: nil)
+                        return
+                    }
+                    
+                    let source = request.sourceImage.clampedToExtent()
+                    filter.setValue(source, forKey: kCIInputImageKey)
+                    
+                    guard let outputImage = filter.outputImage else {
+                        request.finish(with: request.sourceImage, context: nil)
+                        return
+                    }
+                    
+                    request.finish(with: outputImage, context: nil)
+                }
+                
+                // એક્સપોર્ટ સેશન બનાવો
+                guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
+                    DispatchQueue.main.async {
+                        loadingAlert.dismiss(animated: true) {
+                            self.showAlert(title: "ભૂલ", message: "એક્સપોર્ટ સેશન બનાવવામાં નિષ્ફળ!")
+                        }
+                    }
+                    return
+                }
+                
+                exportSession.outputURL = outputURL
+                exportSession.outputFileType = .mp4
+                exportSession.videoComposition = videoComposition
+                exportSession.timeRange = CMTimeRange(start: .zero, duration: originalAsset.duration)
+                
+                // સુધારો: ટાઇમઆઉટ સમય વધારો
+                let exportGroup = DispatchGroup()
+                exportGroup.enter()
+                
+                exportSession.exportAsynchronously {
+                    exportGroup.leave()
+                }
+                
+                // 60 સેકન્ડ ટાઇમઆઉટની રાહ જુઓ
+                let waitResult = exportGroup.wait(timeout: .now() + 60)
+                
                 DispatchQueue.main.async {
+                    // લોડિંગ અલર્ટ બંધ કરો
                     loadingAlert.dismiss(animated: true) {
+                        if waitResult == .timedOut {
+                            // ટાઇમઆઉટ થયો, એટલે એક્સપોર્ટ રદ્દ કરો
+                            exportSession.cancelExport()
+                            self.showAlert(title: "ફિલ્ટર લાગુ કરવાનો સમય સમાપ્ત થયો", message: "કૃપા કરીને નાનો વિડિઓ પસંદ કરો અથવા ફરીથી પ્રયાસ કરો")
+                            return
+                        }
+                        
                         switch exportSession.status {
                         case .completed:
-                            self.filteredAsset = AVAsset(url: outputURL)
-                            self.currentTrimmedAsset = self.filteredAsset
+                            // સફળતાપૂર્વક ફિલ્ટર લાગુ થયું
                             self.setupVideoPlayer(with: outputURL)
-                        case .failed, .cancelled:
+                            self.currentVideoURL = outputURL
+                            self.currentTrimmedAsset = AVAsset(url: outputURL)
+                            
+                        case .failed:
                             if let error = exportSession.error {
-                                self.showAlert(title: "Export Failed", message: error.localizedDescription)
+                                print("ફિલ્ટર ભૂલ: \(error.localizedDescription)")
+                                
+                                // ભૂલનું વિશ્લેષણ કરો અને વધુ સારો સંદેશ બતાવો
+                                if error.localizedDescription.contains("Cannot Decode") || error.localizedDescription.contains("decode") {
+                                    self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "વિડિઓ ફોર્મેટ સાથે સમસ્યા. કૃપા કરીને અલગ વિડિઓ પસંદ કરો.")
+                                } else if error.localizedDescription.contains("out of memory") || error.localizedDescription.contains("memory") {
+                                    self.showAlert(title: "મેમરી ભૂલ", message: "વિડિઓ ખૂબ મોટો છે. કૃપા કરીને નાનો વિડિઓ પસંદ કરો.")
+                                } else {
+                                    self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "કૃપા કરીને ફરી પ્રયાસ કરો: \(error.localizedDescription)")
+                                }
                             } else {
-                                self.showAlert(title: "Export Failed", message: "Unknown error occurred")
+                                self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "અજ્ઞાત ભૂલ આવી, કૃપા કરીને ફરી પ્રયાસ કરો")
                             }
+                            
+                        case .cancelled:
+                            self.showAlert(title: "ફિલ્ટર પ્રક્રિયા રદ્દ કરવામાં આવી", message: "ફિલ્ટર લાગુ કરવાની પ્રક્રિયા રદ્દ કરવામાં આવી હતી")
+                            
                         default:
-                            self.showAlert(title: "Export Failed", message: "Unknown error occurred")
+                            self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "અજ્ઞાત ભૂલ આવી, કૃપા કરીને ફરી પ્રયાસ કરો")
                         }
                     }
                 }
+                
+            } catch {
+                DispatchQueue.main.async {
+                    loadingAlert.dismiss(animated: true) {
+                        self.showAlert(title: "ભૂલ", message: "વિડિઓ પર ફિલ્ટર લાગુ કરવામાં નિષ્ફળ: \(error.localizedDescription)")
+                    }
+                }
             }
         }
     }
     
-    private func getCIFilter(for filterName: String) -> CIFilter? {
-        switch filterName {
+    private func createFilter(name: String) -> CIFilter? {
+        switch name {
         case "Vivid":
-            let filter = CIFilter(name: "CIColorControls")
-            filter?.setValue(1.3, forKey: kCIInputSaturationKey)
-            filter?.setValue(0.3, forKey: kCIInputContrastKey)
-            return filter
-            
+            return CIFilter(name: "CIPhotoEffectChrome")
         case "Dramatic":
-            let filter = CIFilter(name: "CIColorControls")
-            filter?.setValue(1.0, forKey: kCIInputSaturationKey)
-            filter?.setValue(0.5, forKey: kCIInputContrastKey)
-            filter?.setValue(0.1, forKey: kCIInputBrightnessKey)
-            return filter
-            
+            return CIFilter(name: "CIPhotoEffectTransfer")
         case "Mono":
             return CIFilter(name: "CIPhotoEffectMono")
-            
         case "Nashville":
-            let filter = CIFilter(name: "CIColorControls")
-            filter?.setValue(1.2, forKey: kCIInputSaturationKey)
-            filter?.setValue(0.2, forKey: kCIInputContrastKey)
-            filter?.setValue(0.04, forKey: kCIInputBrightnessKey)
-            return filter
-            
-        case "Toaster":
-            let filter = CIFilter(name: "CISepiaTone")
-            filter?.setValue(0.7, forKey: kCIInputIntensityKey)
-            return filter
-            
-        case "1977":
-            let filter = CIFilter(name: "CIColorControls")
-            filter?.setValue(1.3, forKey: kCIInputSaturationKey)
-            filter?.setValue(0.2, forKey: kCIInputContrastKey)
-            filter?.setValue(0.1, forKey: kCIInputBrightnessKey)
-            return filter
-            
-        case "Noir":
-            return CIFilter(name: "CIPhotoEffectNoir")
-            
-        case "Comic":
-            return CIFilter(name: "CIComicEffect")
-            
-        case "Crystallize":
-            let filter = CIFilter(name: "CICrystallize")
-            filter?.setValue(20.0, forKey: kCIInputRadiusKey)
-            return filter
-            
-        case "Bloom":
-            let filter = CIFilter(name: "CIBloom")
-            filter?.setValue(10.0, forKey: kCIInputRadiusKey)
-            filter?.setValue(1.0, forKey: kCIInputIntensityKey)
-            return filter
-            
-        case "Pixellate":
-            let filter = CIFilter(name: "CIPixellate")
-            filter?.setValue(10.0, forKey: kCIInputScaleKey)
-            return filter
-            
-        case "Blur":
-            let filter = CIFilter(name: "CIGaussianBlur")
-            filter?.setValue(5.0, forKey: kCIInputRadiusKey)
-            return filter
-            
-        case "Sepia":
             let filter = CIFilter(name: "CISepiaTone")
             filter?.setValue(0.8, forKey: kCIInputIntensityKey)
             return filter
-            
-        case "Fade":
-            let filter = CIFilter(name: "CIPhotoEffectFade")
+        case "Toaster":
+            return CIFilter(name: "CIPhotoEffectInstant")
+        case "1977":
+            return CIFilter(name: "CIPhotoEffectProcess")
+        case "Noir":
+            return CIFilter(name: "CIPhotoEffectNoir")
+        case "Sepia":
+            let filter = CIFilter(name: "CISepiaTone")
+            filter?.setValue(0.7, forKey: kCIInputIntensityKey)
             return filter
-            
+        case "Fade":
+            return CIFilter(name: "CIPhotoEffectFade")
         case "Sharpen":
             let filter = CIFilter(name: "CISharpenLuminance")
-            filter?.setValue(0.5, forKey: kCIInputSharpnessKey)
+            filter?.setValue(1.0, forKey: kCIInputSharpnessKey)
             return filter
-            
-        case "HDR":
-            let filter = CIFilter(name: "CIToneCurve")
-            filter?.setValue(CIVector(x: 0.0, y: 0.0), forKey: "inputPoint0")
-            filter?.setValue(CIVector(x: 0.25, y: 0.2), forKey: "inputPoint1")
-            filter?.setValue(CIVector(x: 0.5, y: 0.5), forKey: "inputPoint2")
-            filter?.setValue(CIVector(x: 0.75, y: 0.8), forKey: "inputPoint3")
-            filter?.setValue(CIVector(x: 1.0, y: 1.0), forKey: "inputPoint4")
-            return filter
-            
         case "Vignette":
             let filter = CIFilter(name: "CIVignette")
-            filter?.setValue(0.7, forKey: kCIInputIntensityKey)
-            filter?.setValue(1.0, forKey: kCIInputRadiusKey)
+            filter?.setValue(1.0, forKey: kCIInputIntensityKey)
+            filter?.setValue(2.0, forKey: kCIInputRadiusKey)
             return filter
-            
         case "Tonal":
             return CIFilter(name: "CIPhotoEffectTonal")
-            
-        case "Dot Matrix":
-            let filter = CIFilter(name: "CIDotScreen")
-            filter?.setValue(6.0, forKey: kCIInputWidthKey)
-            filter?.setValue(6.0, forKey: kCIInputSharpnessKey)
-            return filter
-            
-        case "Edge Work":
-            return CIFilter(name: "CIEdges")
-            
-        case "X-Ray":
-            return CIFilter(name: "CIColorInvert")
-            
-        case "Posterize":
-            let filter = CIFilter(name: "CIColorPosterize")
-            filter?.setValue(6.0, forKey: "inputLevels")
-            return filter
-            
         default:
             return nil
-        }
-    }
-    
-    private func getFilterCompositorInfo(for filterName: String) -> [String: Any]? {
-        switch filterName {
-        case "Vivid":
-            return ["filterName": "CIColorControls",
-                    "parameters": [kCIInputSaturationKey: 1.3, kCIInputContrastKey: 0.3]]
-            
-        case "Dramatic":
-            return ["filterName": "CIColorControls",
-                    "parameters": [kCIInputSaturationKey: 1.0, kCIInputContrastKey: 0.5, kCIInputBrightnessKey: 0.1]]
-            
-        case "Mono":
-            return ["filterName": "CIPhotoEffectMono", "parameters": [:]]
-            
-        case "Nashville":
-            return ["filterName": "CIColorControls",
-                    "parameters": [kCIInputSaturationKey: 1.2, kCIInputContrastKey: 0.2, kCIInputBrightnessKey: 0.04]]
-            
-        case "Toaster":
-            return ["filterName": "CISepiaTone", "parameters": [kCIInputIntensityKey: 0.7]]
-            
-        case "1977":
-            return ["filterName": "CIColorControls",
-                    "parameters": [kCIInputSaturationKey: 1.3, kCIInputContrastKey: 0.2, kCIInputBrightnessKey: 0.1]]
-            
-        case "Noir":
-            return ["filterName": "CIPhotoEffectNoir", "parameters": [:]]
-            
-        case "Comic":
-            return ["filterName": "CIComicEffect", "parameters": [:]]
-            
-        case "Crystallize":
-            return ["filterName": "CICrystallize", "parameters": [kCIInputRadiusKey: 20.0]]
-            
-        case "Bloom":
-            return ["filterName": "CIBloom", "parameters": [kCIInputRadiusKey: 10.0, kCIInputIntensityKey: 1.0]]
-            
-        case "Pixellate":
-            return ["filterName": "CIPixellate", "parameters": [kCIInputScaleKey: 10.0]]
-            
-        case "Blur":
-            return ["filterName": "CIGaussianBlur", "parameters": [kCIInputRadiusKey: 5.0]]
-            
-        case "Sepia":
-            return ["filterName": "CISepiaTone", "parameters": [kCIInputIntensityKey: 0.8]]
-            
-        case "Fade":
-            return ["filterName": "CIPhotoEffectFade", "parameters": [:]]
-            
-        case "Sharpen":
-            return ["filterName": "CISharpenLuminance", "parameters": [kCIInputSharpnessKey: 0.5]]
-            
-        case "HDR":
-            return ["filterName": "CIToneCurve", "parameters": [
-                "inputPoint0": CIVector(x: 0.0, y: 0.0),
-                "inputPoint1": CIVector(x: 0.25, y: 0.2),
-                "inputPoint2": CIVector(x: 0.5, y: 0.5),
-                "inputPoint3": CIVector(x: 0.75, y: 0.8),
-                "inputPoint4": CIVector(x: 1.0, y: 1.0)
-            ]]
-            
-        case "Vignette":
-            return ["filterName": "CIVignette", "parameters": [kCIInputIntensityKey: 0.7, kCIInputRadiusKey: 1.0]]
-            
-        case "Tonal":
-            return ["filterName": "CIPhotoEffectTonal", "parameters": [:]]
-            
-        case "Dot Matrix":
-            return ["filterName": "CIDotScreen", "parameters": [kCIInputWidthKey: 6.0, kCIInputSharpnessKey: 6.0]]
-            
-        case "Edge Work":
-            return ["filterName": "CIEdges", "parameters": [:]]
-            
-        case "X-Ray":
-            return ["filterName": "CIColorInvert", "parameters": [:]]
-            
-        case "Posterize":
-            return ["filterName": "CIColorPosterize", "parameters": ["inputLevels": 6.0]]
-            
-        default:
-            return nil
-        }
-    }
-    
-    private func orientation(from transform: CGAffineTransform) -> (orientation: UIImage.Orientation, isPortrait: Bool) {
-        var assetOrientation = UIImage.Orientation.up
-        var isPortrait = false
-        
-        let tfA = transform.a
-        let tfB = transform.b
-        let tfC = transform.c
-        let tfD = transform.d
-        
-        if tfA == 0 && tfB == 1.0 && tfC == -1.0 && tfD == 0 {
-            assetOrientation = .right
-            isPortrait = true
-        } else if tfA == 0 && tfB == -1.0 && tfC == 1.0 && tfD == 0 {
-            assetOrientation = .left
-            isPortrait = true
-        } else if tfA == 1.0 && tfB == 0 && tfC == 0 && tfD == 1.0 {
-            assetOrientation = .up
-        } else if tfA == -1.0 && tfB == 0 && tfC == 0 && tfD == -1.0 {
-            assetOrientation = .down
-        }
-        
-        return (assetOrientation, isPortrait)
-    }
-    
-    class CIFilterVideoCompositor: NSObject, AVVideoCompositing {
-        var requiredPixelBufferAttributesForRenderContext: [String: Any] = [
-            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-        ]
-        
-        var sourcePixelBufferAttributes: [String: Any]? = [
-            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-        ]
-        
-        var ciContext = CIContext()
-        private var currentVideoComposition: AVVideoComposition?
-        
-        func renderContextChanged(_ newRenderContext: AVVideoCompositionRenderContext) {
-            currentVideoComposition = newRenderContext.videoComposition
-        }
-        
-        func startRequest(_ asyncVideoCompositionRequest: AVAsynchronousVideoCompositionRequest) {
-            guard let resultPixels = asyncVideoCompositionRequest.renderContext.newPixelBuffer() else {
-                asyncVideoCompositionRequest.finish(with: NSError(domain: "CIFilterVideoCompositor", code: -1, userInfo: nil))
-                return
-            }
-            
-            guard let sourcePixels = asyncVideoCompositionRequest.sourceFrame(byTrackID: asyncVideoCompositionRequest.sourceTrackIDs[0].int32Value) else {
-                asyncVideoCompositionRequest.finish(with: NSError(domain: "CIFilterVideoCompositor", code: -1, userInfo: nil))
-                return
-            }
-            
-            let sourceCIImage = CIImage(cvPixelBuffer: sourcePixels)
-            
-            if let filterInfo = FilterData.shared.currentFilterInfo,
-               let filterName = filterInfo["filterName"] as? String,
-               let parameters = filterInfo["parameters"] as? [String: Any] {
-                
-                guard let filter = CIFilter(name: filterName) else {
-                    asyncVideoCompositionRequest.finish(with: NSError(domain: "CIFilterVideoCompositor", code: -1, userInfo: nil))
-                    return
-                }
-                
-                filter.setValue(sourceCIImage, forKey: kCIInputImageKey)
-                
-                for (key, value) in parameters {
-                    filter.setValue(value, forKey: key)
-                }
-                
-                if let outputImage = filter.outputImage {
-                    self.ciContext.render(outputImage, to: resultPixels)
-                  //  asyncVideoCompositionRequest.finish(with: resultPixels)
-                    return
-                }
-            }
-            
-            self.ciContext.render(sourceCIImage, to: resultPixels)
-          //  asyncVideoCompositionRequest.finish(with: resultPixels)
         }
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        if currentTrimmedAsset == nil && filteredAsset != nil {
-            currentTrimmedAsset = filteredAsset
-        } else if currentTrimmedAsset == nil, let videoURL = currentVideoURL {
-            currentTrimmedAsset = AVAsset(url: videoURL)
-        }
         
         guard let asset = currentTrimmedAsset else {
             showAlert(title: "Error", message: "No video available to save")
@@ -767,8 +549,7 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
         let dateString = dateFormatter.string(from: Date())
-        let filterName = currentFilter.replacingOccurrences(of: " ", with: "_")
-        let outputURL = documentsDirectory.appendingPathComponent("Filtered_\(filterName)_\(dateString).mp4")
+        let outputURL = documentsDirectory.appendingPathComponent("TrimmedVideo_\(dateString).mp4")
         
         if FileManager.default.fileExists(atPath: outputURL.path) {
             do {
@@ -817,11 +598,6 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     DispatchQueue.main.async {
                         if success {
                             self.showAlert(title: "Success", message: "Video saved to your photo library")
-                            do {
-                                try FileManager.default.removeItem(at: videoURL)
-                            } catch {
-                                print("Could not remove temp file: \(error)")
-                            }
                         } else {
                             if let error = error {
                                 self.showAlert(title: "Save Failed", message: error.localizedDescription)
@@ -846,4 +622,3 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         present(alert, animated: true, completion: nil)
     }
 }
-
