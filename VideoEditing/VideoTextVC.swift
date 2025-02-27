@@ -525,9 +525,9 @@ class VideoTextVC: UIViewController, UIImagePickerControllerDelegate, UINavigati
             
             let normalizedX = (viewPosition.x - videoRect.minX) / videoRect.width
             let normalizedY = (viewPosition.y - videoRect.minY) / videoRect.height
-
+            
             var adjustedY = normalizedY
-
+            
             if videoInfo.isPortrait {
                 adjustedY = 1.0 - normalizedY
             }
@@ -564,7 +564,7 @@ class VideoTextVC: UIViewController, UIImagePickerControllerDelegate, UINavigati
         
         return videoComposition
     }
-
+    
     private func orientation(from transform: CGAffineTransform, videoSize: CGSize) -> (size: CGSize, transform: CGAffineTransform, isPortrait: Bool) {
         let videoSize = videoSize
         var transform = transform

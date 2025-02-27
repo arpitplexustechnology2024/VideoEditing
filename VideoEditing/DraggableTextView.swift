@@ -142,7 +142,7 @@ class DraggableTextView: UIView {
             
         case .ended, .cancelled:
             if let deleteArea = deleteAreaFrame, frame.intersects(deleteArea) {
-
+                
                 UIView.animate(withDuration: 0.3, animations: {
                     self.alpha = 0
                     self.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -151,7 +151,7 @@ class DraggableTextView: UIView {
                     self.onDelete?()
                 }
             } else {
-
+                
                 UIView.animate(withDuration: 0.3) {
                     self.deleteIndicator.alpha = 0
                 } completion: { _ in
@@ -163,7 +163,7 @@ class DraggableTextView: UIView {
             break
         }
     }
-
+    
     @objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
         switch gesture.state {
         case .began:
@@ -195,7 +195,7 @@ class DraggableTextView: UIView {
     }
     
     @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
-
+        
         UIView.animate(withDuration: 0.2, animations: {
             self.layer.borderColor = UIColor.yellow.cgColor
             self.layer.borderWidth = 2
