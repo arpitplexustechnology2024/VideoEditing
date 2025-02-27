@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import Photos
+import MobileCoreServices
 
 class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -31,6 +32,7 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         super.viewDidLoad()
         setupPlayPauseButton()
         setupUI()
+        setupSwipeGesture()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(videoViewTapped))
         videoView.addGestureRecognizer(tapGesture)
@@ -43,6 +45,18 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     deinit {
         if let videoLooper = videoLooper {
             NotificationCenter.default.removeObserver(videoLooper)
+        }
+    }
+    
+    private func setupSwipeGesture() {
+        let swipeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeGesture.edges = .left
+        self.view.addGestureRecognizer(swipeGesture)
+    }
+    
+    @objc private func handleSwipe(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        if gesture.state == .recognized {
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -186,19 +200,21 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         present(alert, animated: true, completion: nil)
     }
     
-    func requestCameraAccess() {
+    private func requestCameraAccess() {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
-        case .authorized:
-            openImagePicker(sourceType: .camera)
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    DispatchQueue.main.async {
-                        self.openImagePicker(sourceType: .camera)
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        self?.showVideoPicker(for: .camera)
+                    } else {
+                        self?.showSettingsAlert(title: "Camera Access Denied", message: "Enable camera access in Settings.")
                     }
                 }
             }
+        case .authorized:
+            showVideoPicker(for: .camera)
         case .denied, .restricted:
             showSettingsAlert(title: "Camera Access Denied", message: "Enable camera access in Settings.")
         @unknown default:
@@ -206,19 +222,21 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         }
     }
     
-    func requestGalleryAccess() {
+    private func requestGalleryAccess() {
         let status = PHPhotoLibrary.authorizationStatus()
         switch status {
-        case .authorized, .limited:
-            openImagePicker(sourceType: .photoLibrary)
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { status in
-                if status == .authorized || status == .limited {
-                    DispatchQueue.main.async {
-                        self.openImagePicker(sourceType: .photoLibrary)
+            PHPhotoLibrary.requestAuthorization { [weak self] status in
+                DispatchQueue.main.async {
+                    if status == .authorized {
+                        self?.showVideoPicker(for: .photoLibrary)
+                    } else {
+                        self?.showSettingsAlert(title: "Gallery Access Denied", message: "Enable photo library access in Settings.")
                     }
                 }
             }
+        case .authorized, .limited:
+            showVideoPicker(for: .photoLibrary)
         case .denied, .restricted:
             showSettingsAlert(title: "Gallery Access Denied", message: "Enable photo library access in Settings.")
         @unknown default:
@@ -226,16 +244,47 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         }
     }
     
-    func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        guard UIImagePickerController.isSourceTypeAvailable(sourceType) else { return }
+    private func showVideoPicker(for sourceType: UIImagePickerController.SourceType) {
+        guard UIImagePickerController.isSourceTypeAvailable(sourceType) else {
+            print("Source type \(sourceType) is not available")
+            return
+        }
         
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = sourceType
-        imagePicker.allowsEditing = false
-        imagePicker.mediaTypes = ["public.movie"]
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = sourceType
+        picker.mediaTypes = [kUTTypeMovie as String]
         
-        present(imagePicker, animated: true, completion: nil)
+        picker.videoQuality = .typeHigh
+        
+        if sourceType == .camera {
+            if let cameraDevice = AVCaptureDevice.default(for: .video) {
+                do {
+                    try cameraDevice.lockForConfiguration()
+                    if cameraDevice.isExposureModeSupported(.continuousAutoExposure) {
+                        cameraDevice.exposureMode = .continuousAutoExposure
+                    }
+                    if cameraDevice.isFocusModeSupported(.continuousAutoFocus) {
+                        cameraDevice.focusMode = .continuousAutoFocus
+                    }
+                    if cameraDevice.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) {
+                        cameraDevice.whiteBalanceMode = .continuousAutoWhiteBalance
+                    }
+                    cameraDevice.unlockForConfiguration()
+                } catch {
+                    print("Camera configuration error: \(error)")
+                }
+            }
+        }
+        
+        picker.allowsEditing = true
+        picker.videoMaximumDuration = 15.0
+        
+        if #available(iOS 14.0, *) {
+            picker.videoExportPreset = AVAssetExportPresetPassthrough
+        }
+        
+        present(picker, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -271,7 +320,6 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     @IBAction func filterButtonTapped(_ sender: UIButton) {
-        // ખાતરી કરો કે વિડિઓ સિલેક્ટ કરવામાં આવ્યો છે
         guard let asset = currentTrimmedAsset else {
             showAlert(title: "Error", message: "Please first select video!")
             return
@@ -293,7 +341,6 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
     }
     
     private func applyFilter(_ filterName: String, to asset: AVAsset) {
-        // જો "Original" ફિલ્ટર પસંદ કર્યું હોય તો, મૂળ વિડિઓ પ્લે કરો
         if filterName == "Original" {
             if let currentVideoURL = originalVideoURL {
                 setupVideoPlayer(with: currentVideoURL)
@@ -301,16 +348,14 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             return
         }
         
-        // મૂળ વિડિઓ અસેટ મેળવો, જે મૂળ કેમેરા/ગેલેરીથી પસંદ કરેલો છે
         guard let originalVideoURL = self.originalVideoURL else {
-            showAlert(title: "ભૂલ", message: "મૂળ વિડિઓ મળ્યો નથી!")
+            showAlert(title: "Error", message: "Original video not found!")
             return
         }
         
-        // અહીં મૂળ વિડિઓ અસેટનો ઉપયોગ કરો, નહિં કે વર્તમાન ફિલ્ટર કરેલા અસેટનો
         let originalAsset = AVAsset(url: originalVideoURL)
         
-        let loadingAlert = UIAlertController(title: "ફિલ્ટર લાગુ થઈ રહ્યું છે", message: "મહેરબાની કરીને રાહ જુઓ...", preferredStyle: .alert)
+        let loadingAlert = UIAlertController(title: "", message: "", preferredStyle: .alert)
         let loadingIndicator = UIActivityIndicatorView(style: .large)
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -333,7 +378,6 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-            // ફિલ્ટર પ્રોસેસિંગ માટે વધારે મેમરી ફાળવો
             let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let outputURL = documentsDirectory.appendingPathComponent("FilteredVideo_\(UUID().uuidString).mp4")
             
@@ -341,21 +385,18 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                 try? FileManager.default.removeItem(at: outputURL)
             }
             
-            // કમ્પોઝિશન બનાવો
             let composition = AVMutableComposition()
             
-            // પ્રથમ વિડિઓ ટ્રેક મેળવવાનો પ્રયાસ - મૂળ વિડિઓ અસેટથી
             guard let videoTrack = originalAsset.tracks(withMediaType: .video).first,
                   let compositionTrack = composition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
                 DispatchQueue.main.async {
                     loadingAlert.dismiss(animated: true) {
-                        self.showAlert(title: "ભૂલ", message: "વિડિઓ ટ્રેક મેળવવામાં નિષ્ફળ!")
+                        self.showAlert(title: "Error", message: "Failed to get video track!")
                     }
                 }
                 return
             }
             
-            // ઓડિઓ ટ્રેક ઉમેરો જો ઉપલબ્ધ હોય તો - મૂળ વિડિઓ અસેટથી
             do {
                 if let audioTrack = originalAsset.tracks(withMediaType: .audio).first,
                    let audioCompositionTrack = composition.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
@@ -363,26 +404,22 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     try audioCompositionTrack.insertTimeRange(timeRange, of: audioTrack, at: .zero)
                 }
             } catch {
-                print("ઓડિઓ ટ્રેક કોપી કરવામાં ભૂલ: \(error)")
-                // ઓડિઓ ભૂલ છતાં ચાલુ રાખવું, કારણ કે આપણે માત્ર વિડિઓ પર ફિલ્ટર લગાવવા માંગીએ છીએ
+                print("Error copying audio track: \(error)")
             }
             
             do {
-                // વિડિઓ ટ્રેક ઉમેરો
                 let timeRange = CMTimeRange(start: .zero, duration: originalAsset.duration)
                 try compositionTrack.insertTimeRange(timeRange, of: videoTrack, at: .zero)
                 
-                // ફિલ્ટર બનાવો
                 guard let filter = self.createFilter(name: filterName) else {
                     DispatchQueue.main.async {
                         loadingAlert.dismiss(animated: true) {
-                            self.showAlert(title: "ભૂલ", message: "ફિલ્ટર બનાવી શકાયું નથી!")
+                            self.showAlert(title: "Error", message: "Could not create filter!")
                         }
                     }
                     return
                 }
                 
-                // વિડિઓ કમ્પોઝિશન બનાવો જે ફિલ્ટર લાગુ કરશે
                 let videoComposition = AVMutableVideoComposition(asset: originalAsset) { [weak filter] request in
                     guard let filter = filter else {
                         request.finish(with: request.sourceImage, context: nil)
@@ -400,11 +437,10 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     request.finish(with: outputImage, context: nil)
                 }
                 
-                // એક્સપોર્ટ સેશન બનાવો
                 guard let exportSession = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetHighestQuality) else {
                     DispatchQueue.main.async {
                         loadingAlert.dismiss(animated: true) {
-                            self.showAlert(title: "ભૂલ", message: "એક્સપોર્ટ સેશન બનાવવામાં નિષ્ફળ!")
+                            self.showAlert(title: "Error", message: "Failed to create export session!")
                         }
                     }
                     return
@@ -415,7 +451,6 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                 exportSession.videoComposition = videoComposition
                 exportSession.timeRange = CMTimeRange(start: .zero, duration: originalAsset.duration)
                 
-                // સુધારો: ટાઇમઆઉટ સમય વધારો
                 let exportGroup = DispatchGroup()
                 exportGroup.enter()
                 
@@ -423,47 +458,42 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
                     exportGroup.leave()
                 }
                 
-                // 60 સેકન્ડ ટાઇમઆઉટની રાહ જુઓ
                 let waitResult = exportGroup.wait(timeout: .now() + 60)
                 
                 DispatchQueue.main.async {
-                    // લોડિંગ અલર્ટ બંધ કરો
                     loadingAlert.dismiss(animated: true) {
                         if waitResult == .timedOut {
-                            // ટાઇમઆઉટ થયો, એટલે એક્સપોર્ટ રદ્દ કરો
                             exportSession.cancelExport()
-                            self.showAlert(title: "ફિલ્ટર લાગુ કરવાનો સમય સમાપ્ત થયો", message: "કૃપા કરીને નાનો વિડિઓ પસંદ કરો અથવા ફરીથી પ્રયાસ કરો")
+                            self.showAlert(title: "Filter application timed out", message: "Please select a smaller video or try again")
                             return
                         }
                         
                         switch exportSession.status {
                         case .completed:
-                            // સફળતાપૂર્વક ફિલ્ટર લાગુ થયું
                             self.setupVideoPlayer(with: outputURL)
                             self.currentVideoURL = outputURL
                             self.currentTrimmedAsset = AVAsset(url: outputURL)
                             
                         case .failed:
                             if let error = exportSession.error {
-                                print("ફિલ્ટર ભૂલ: \(error.localizedDescription)")
+                                print("Filter error: \(error.localizedDescription)")
                                 
-                                // ભૂલનું વિશ્લેષણ કરો અને વધુ સારો સંદેશ બતાવો
                                 if error.localizedDescription.contains("Cannot Decode") || error.localizedDescription.contains("decode") {
-                                    self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "વિડિઓ ફોર્મેટ સાથે સમસ્યા. કૃપા કરીને અલગ વિડિઓ પસંદ કરો.")
+                                    self.showAlert(title: "Filter application failed", message: "Problem with video format. Please select a different video.")
                                 } else if error.localizedDescription.contains("out of memory") || error.localizedDescription.contains("memory") {
-                                    self.showAlert(title: "મેમરી ભૂલ", message: "વિડિઓ ખૂબ મોટો છે. કૃપા કરીને નાનો વિડિઓ પસંદ કરો.")
+                                    self.showAlert(title: "Memory Error", message: "Video is too large. Please select a smaller video.")
                                 } else {
-                                    self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "કૃપા કરીને ફરી પ્રયાસ કરો: \(error.localizedDescription)")
+                                    self.showAlert(title: "Filter application failed", message: "Please try again: \(error.localizedDescription)")
                                 }
                             } else {
-                                self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "અજ્ઞાત ભૂલ આવી, કૃપા કરીને ફરી પ્રયાસ કરો")
+                                self.showAlert(title: "Filter application failed", message: "Unknown error occurred, please try again")
                             }
                             
                         case .cancelled:
-                            self.showAlert(title: "ફિલ્ટર પ્રક્રિયા રદ્દ કરવામાં આવી", message: "ફિલ્ટર લાગુ કરવાની પ્રક્રિયા રદ્દ કરવામાં આવી હતી")
+                            self.showAlert(title: "Filter process canceled", message: "The filter application process was canceled")
                             
                         default:
-                            self.showAlert(title: "ફિલ્ટર લાગુ કરવામાં નિષ્ફળતા", message: "અજ્ઞાત ભૂલ આવી, કૃપા કરીને ફરી પ્રયાસ કરો")
+                            self.showAlert(title: "Filter application failed", message: "Unknown error occurred, please try again")
                         }
                     }
                 }
@@ -471,7 +501,7 @@ class VideoFilterVC: UIViewController, UIImagePickerControllerDelegate, UINaviga
             } catch {
                 DispatchQueue.main.async {
                     loadingAlert.dismiss(animated: true) {
-                        self.showAlert(title: "ભૂલ", message: "વિડિઓ પર ફિલ્ટર લાગુ કરવામાં નિષ્ફળ: \(error.localizedDescription)")
+                        self.showAlert(title: "Error", message: "Failed to apply filter to video: \(error.localizedDescription)")
                     }
                 }
             }

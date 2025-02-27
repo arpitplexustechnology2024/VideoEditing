@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 import Photos
 import AVKit
+import MobileCoreServices
 
 class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -29,6 +30,7 @@ class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         setupPlayPauseButton()
         setupUI()
+        setupSwipeGesture()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(videoViewTapped))
         videoView.addGestureRecognizer(tapGesture)
@@ -41,6 +43,18 @@ class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavig
     deinit {
         if let videoLooper = videoLooper {
             NotificationCenter.default.removeObserver(videoLooper)
+        }
+    }
+    
+    private func setupSwipeGesture() {
+        let swipeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeGesture.edges = .left
+        self.view.addGestureRecognizer(swipeGesture)
+    }
+    
+    @objc private func handleSwipe(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        if gesture.state == .recognized {
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -180,19 +194,21 @@ class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(alert, animated: true, completion: nil)
     }
     
-    func requestCameraAccess() {
+    private func requestCameraAccess() {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
-        case .authorized:
-            openImagePicker(sourceType: .camera)
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                if granted {
-                    DispatchQueue.main.async {
-                        self.openImagePicker(sourceType: .camera)
+            AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        self?.showVideoPicker(for: .camera)
+                    } else {
+                        self?.showSettingsAlert(title: "Camera Access Denied", message: "Enable camera access in Settings.")
                     }
                 }
             }
+        case .authorized:
+            showVideoPicker(for: .camera)
         case .denied, .restricted:
             showSettingsAlert(title: "Camera Access Denied", message: "Enable camera access in Settings.")
         @unknown default:
@@ -200,19 +216,21 @@ class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func requestGalleryAccess() {
+    private func requestGalleryAccess() {
         let status = PHPhotoLibrary.authorizationStatus()
         switch status {
-        case .authorized, .limited:
-            openImagePicker(sourceType: .photoLibrary)
         case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { status in
-                if status == .authorized || status == .limited {
-                    DispatchQueue.main.async {
-                        self.openImagePicker(sourceType: .photoLibrary)
+            PHPhotoLibrary.requestAuthorization { [weak self] status in
+                DispatchQueue.main.async {
+                    if status == .authorized {
+                        self?.showVideoPicker(for: .photoLibrary)
+                    } else {
+                        self?.showSettingsAlert(title: "Gallery Access Denied", message: "Enable photo library access in Settings.")
                     }
                 }
             }
+        case .authorized, .limited:
+            showVideoPicker(for: .photoLibrary)
         case .denied, .restricted:
             showSettingsAlert(title: "Gallery Access Denied", message: "Enable photo library access in Settings.")
         @unknown default:
@@ -220,16 +238,47 @@ class VideoStickerVC: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func openImagePicker(sourceType: UIImagePickerController.SourceType) {
-        guard UIImagePickerController.isSourceTypeAvailable(sourceType) else { return }
+    private func showVideoPicker(for sourceType: UIImagePickerController.SourceType) {
+        guard UIImagePickerController.isSourceTypeAvailable(sourceType) else {
+            print("Source type \(sourceType) is not available")
+            return
+        }
         
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = sourceType
-        imagePicker.allowsEditing = false
-        imagePicker.mediaTypes = ["public.movie"]
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = sourceType
+        picker.mediaTypes = [kUTTypeMovie as String]
         
-        present(imagePicker, animated: true, completion: nil)
+        picker.videoQuality = .typeHigh
+        
+        if sourceType == .camera {
+            if let cameraDevice = AVCaptureDevice.default(for: .video) {
+                do {
+                    try cameraDevice.lockForConfiguration()
+                    if cameraDevice.isExposureModeSupported(.continuousAutoExposure) {
+                        cameraDevice.exposureMode = .continuousAutoExposure
+                    }
+                    if cameraDevice.isFocusModeSupported(.continuousAutoFocus) {
+                        cameraDevice.focusMode = .continuousAutoFocus
+                    }
+                    if cameraDevice.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) {
+                        cameraDevice.whiteBalanceMode = .continuousAutoWhiteBalance
+                    }
+                    cameraDevice.unlockForConfiguration()
+                } catch {
+                    print("Camera configuration error: \(error)")
+                }
+            }
+        }
+        
+        picker.allowsEditing = true
+        picker.videoMaximumDuration = 15.0
+        
+        if #available(iOS 14.0, *) {
+            picker.videoExportPreset = AVAssetExportPresetPassthrough
+        }
+        
+        present(picker, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
