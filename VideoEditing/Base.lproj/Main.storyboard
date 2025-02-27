@@ -1,24 +1,758 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IxG-sE-Qb6">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Video Filter-->
+        <scene sceneID="HTo-ji-OF1">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController storyboardIdentifier="VideoFilterVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RVB-Ic-IcZ" customClass="VideoFilterVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="har-Xf-ndj">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="igK-b1-oYd">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssf-Kd-hFP">
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="camera.filters" catalog="system"/>
+                                        <connections>
+                                            <action selector="filterButtonTapped:" destination="RVB-Ic-IcZ" eventType="touchUpInside" id="upN-Hh-Xmf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEZ-kA-Fp0">
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="RVB-Ic-IcZ" eventType="touchUpInside" id="sdC-bT-FeF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="nMW-t3-QLO"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EjO-lq-gmh">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="MOZ-2T-2GB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MOZ-2T-2GB" firstAttribute="trailing" secondItem="igK-b1-oYd" secondAttribute="trailing" constant="16" id="6u1-rE-H32"/>
+                            <constraint firstItem="igK-b1-oYd" firstAttribute="leading" secondItem="MOZ-2T-2GB" secondAttribute="leading" constant="18" id="Nwk-7L-qb6"/>
+                            <constraint firstItem="igK-b1-oYd" firstAttribute="top" secondItem="EjO-lq-gmh" secondAttribute="bottom" constant="16" id="XXS-NS-XMq"/>
+                            <constraint firstItem="MOZ-2T-2GB" firstAttribute="bottom" secondItem="igK-b1-oYd" secondAttribute="bottom" constant="8" id="YmP-y8-Ona"/>
+                            <constraint firstItem="EjO-lq-gmh" firstAttribute="top" secondItem="MOZ-2T-2GB" secondAttribute="top" id="t01-4Z-aEN"/>
+                            <constraint firstItem="EjO-lq-gmh" firstAttribute="trailing" secondItem="MOZ-2T-2GB" secondAttribute="trailing" id="tjs-oW-cgw"/>
+                            <constraint firstItem="EjO-lq-gmh" firstAttribute="leading" secondItem="MOZ-2T-2GB" secondAttribute="leading" id="vlc-aj-coK"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Video Filter" id="qOG-1v-7vJ">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="97W-BX-gOx">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="RVB-Ic-IcZ" id="slo-EF-HZY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="97W-BX-gOx" id="mmk-RP-ziX"/>
+                        <outlet property="filterButton" destination="ssf-Kd-hFP" id="aI5-ql-vrn"/>
+                        <outlet property="saveButton" destination="VEZ-kA-Fp0" id="3ry-Y1-7GB"/>
+                        <outlet property="videoView" destination="EjO-lq-gmh" id="31T-In-XV7"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UyN-AS-hE3" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="3547.3282442748091" y="-4.2253521126760569"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="pNA-1A-Ag3">
+            <objects>
+                <viewController storyboardIdentifier="HomeVC" id="Zad-kq-5O2" customClass="HomeVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="twm-t5-lif">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Ba9-t7-fD2">
+                                <rect key="frame" x="50" y="236" width="293" height="380"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="drf-36-Vui">
+                                        <rect key="frame" x="0.0" y="0.0" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Crop">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="cropButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="BfN-bH-vl4"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2y2-Do-OCz">
+                                        <rect key="frame" x="0.0" y="66" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Text ">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="textButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="sVb-XE-gQn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q0C-Hf-uA2">
+                                        <rect key="frame" x="0.0" y="132" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Speed">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="speedButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="IRT-Cp-W9t"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eXE-XT-q3C">
+                                        <rect key="frame" x="0.0" y="198" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Music">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="musicButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="Q0w-a2-pPf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYB-8I-62d">
+                                        <rect key="frame" x="0.0" y="264" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Sticker">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="stickerButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="Vh7-Ld-q6x"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xgV-bC-dc2">
+                                        <rect key="frame" x="0.0" y="330" width="293" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Filter">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="filterButton:" destination="Zad-kq-5O2" eventType="touchUpInside" id="4m4-WX-ixf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="380" id="5WH-Xp-9KW"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="deD-jN-YiO"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="deD-jN-YiO" firstAttribute="trailing" secondItem="Ba9-t7-fD2" secondAttribute="trailing" constant="50" id="bus-Jc-VsH"/>
+                            <constraint firstItem="Ba9-t7-fD2" firstAttribute="leading" secondItem="deD-jN-YiO" secondAttribute="leading" constant="50" id="kwg-ep-M8T"/>
+                            <constraint firstItem="Ba9-t7-fD2" firstAttribute="centerX" secondItem="twm-t5-lif" secondAttribute="centerX" id="o83-gs-4ZS"/>
+                            <constraint firstItem="Ba9-t7-fD2" firstAttribute="centerY" secondItem="twm-t5-lif" secondAttribute="centerY" id="yBW-ZA-Sw7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Home" id="DhS-Uy-pPR"/>
+                    <connections>
+                        <outlet property="cropButton" destination="drf-36-Vui" id="OWi-X0-gdc"/>
+                        <outlet property="filterButton" destination="xgV-bC-dc2" id="EQJ-e7-L6w"/>
+                        <outlet property="musicButton" destination="eXE-XT-q3C" id="tGQ-RY-PfP"/>
+                        <outlet property="speedButton" destination="Q0C-Hf-uA2" id="PSI-Xw-uCu"/>
+                        <outlet property="stickerButton" destination="qYB-8I-62d" id="Ufx-qM-Yh3"/>
+                        <outlet property="textButton" destination="2y2-Do-OCz" id="KMH-CZ-8Hv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nac-ly-V3G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="270.99236641221376" y="-12.67605633802817"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Uol-eH-8uL">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="u2H-nz-2cg" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="4Ae-lW-vvs">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dAz-Bm-hVj" kind="relationship" relationship="rootViewController" id="5p6-67-mQH"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2lc-A5-nYk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1083.206106870229" y="-4.2253521126760569"/>
+        </scene>
+        <!--Video Editing-->
+        <scene sceneID="q67-YF-6Ee">
+            <objects>
+                <viewController storyboardIdentifier="VideoEditingVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dAz-Bm-hVj" customClass="VideoEditingVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="trI-vS-7Zw">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kvd-CV-IV9">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFV-wQ-7af">
+                                        <rect key="frame" x="0.0" y="0.0" width="44.333333333333336" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="crop" catalog="system"/>
+                                        <connections>
+                                            <action selector="cropButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="bWo-qM-L7R"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ga8-ft-TQ3">
+                                        <rect key="frame" x="52.333333333333329" y="0.0" width="44.666666666666671" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="timer.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="timerButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="ALd-Bz-KI5"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7jH-ef-g7h">
+                                        <rect key="frame" x="105" y="0.0" width="44.333333333333343" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="music.note" catalog="system"/>
+                                        <connections>
+                                            <action selector="musicButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="laH-Kl-6ah"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dm-Kh-UPe">
+                                        <rect key="frame" x="157.33333333333334" y="0.0" width="44.333333333333343" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="camera.filters" catalog="system"/>
+                                        <connections>
+                                            <action selector="filterButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="kI8-w4-igK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mXw-Xg-93B">
+                                        <rect key="frame" x="209.66666666666666" y="0.0" width="44.333333333333343" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="t.square.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="textButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="QWG-L6-4vL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M3I-sO-Yrg">
+                                        <rect key="frame" x="262" y="0.0" width="44.666666666666686" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="figure.highintensity.intervaltraining.circle" catalog="system"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hru-eV-7eX">
+                                        <rect key="frame" x="314.66666666666669" y="0.0" width="44.333333333333314" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="dAz-Bm-hVj" eventType="touchUpInside" id="g0K-94-BpM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="4bu-F2-pvz"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uPj-hy-qJP">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hvR-Xl-Ovn"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kvd-CV-IV9" firstAttribute="leading" secondItem="hvR-Xl-Ovn" secondAttribute="leading" constant="18" id="3rm-KX-EDu"/>
+                            <constraint firstItem="kvd-CV-IV9" firstAttribute="top" secondItem="uPj-hy-qJP" secondAttribute="bottom" constant="16" id="HMd-Ev-4K6"/>
+                            <constraint firstItem="uPj-hy-qJP" firstAttribute="trailing" secondItem="hvR-Xl-Ovn" secondAttribute="trailing" id="Kyj-u1-CoI"/>
+                            <constraint firstItem="uPj-hy-qJP" firstAttribute="leading" secondItem="hvR-Xl-Ovn" secondAttribute="leading" id="ZpC-I6-Lm8"/>
+                            <constraint firstItem="hvR-Xl-Ovn" firstAttribute="bottom" secondItem="kvd-CV-IV9" secondAttribute="bottom" constant="8" id="cRw-Xy-bbW"/>
+                            <constraint firstItem="uPj-hy-qJP" firstAttribute="top" secondItem="hvR-Xl-Ovn" secondAttribute="top" id="sWe-89-3ay"/>
+                            <constraint firstItem="hvR-Xl-Ovn" firstAttribute="trailing" secondItem="kvd-CV-IV9" secondAttribute="trailing" constant="16" id="uYF-sk-jgQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Editing" id="t7j-VF-kQt">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="eaL-DT-8mB">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="dAz-Bm-hVj" id="ck7-Nv-kc4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="speaker.wave.2.fill" catalog="system" id="cWI-OG-hUk">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="muteButtonTapped:" destination="dAz-Bm-hVj" id="drN-9S-atA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="eaL-DT-8mB" id="zDq-dH-igX"/>
+                        <outlet property="buttonStackView" destination="kvd-CV-IV9" id="PMA-VB-Enr"/>
+                        <outlet property="cropButton" destination="xFV-wQ-7af" id="cXd-vL-wia"/>
+                        <outlet property="filterButton" destination="1dm-Kh-UPe" id="ZS0-d8-mBe"/>
+                        <outlet property="musicButton" destination="7jH-ef-g7h" id="L6r-2T-UOd"/>
+                        <outlet property="muteButton" destination="cWI-OG-hUk" id="ZzE-vG-k3i"/>
+                        <outlet property="saveButton" destination="hru-eV-7eX" id="sQF-jf-BfR"/>
+                        <outlet property="stickerButton" destination="M3I-sO-Yrg" id="h8L-6A-FcA"/>
+                        <outlet property="textButton" destination="mXw-Xg-93B" id="lhn-BR-MhB"/>
+                        <outlet property="timerButton" destination="ga8-ft-TQ3" id="Va0-Vd-heO"/>
+                        <outlet property="videoView" destination="uPj-hy-qJP" id="Fcf-Zi-eMm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qTL-uA-DTE" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1843.5114503816794" y="-4.2253521126760569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="1yV-4J-69L">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GDS-5M-TbC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="IL7-E0-aRX">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="RVB-Ic-IcZ" kind="relationship" relationship="rootViewController" id="7Kl-5o-gWo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yNI-q8-iDj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2643.5114503816794" y="-4.2253521126760569"/>
+        </scene>
+        <!--Video Text-->
+        <scene sceneID="tSy-FS-YMk">
+            <objects>
+                <viewController storyboardIdentifier="VideoTextVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oNr-U1-oA0" customClass="VideoTextVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nRN-G4-YfD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="5Xg-HV-d3S">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sR-U8-ISx">
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="t.square.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="textButtonTapped:" destination="oNr-U1-oA0" eventType="touchUpInside" id="JFI-GY-dgw"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wp6-T3-Hl0">
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="oNr-U1-oA0" eventType="touchUpInside" id="JMQ-sb-FxO"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="RCz-FD-rKW"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8h-2C-KJS">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WuV-3G-Zs6"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="d8h-2C-KJS" firstAttribute="leading" secondItem="WuV-3G-Zs6" secondAttribute="leading" id="1Z1-0K-6YK"/>
+                            <constraint firstItem="d8h-2C-KJS" firstAttribute="trailing" secondItem="WuV-3G-Zs6" secondAttribute="trailing" id="2wL-Fn-3uc"/>
+                            <constraint firstItem="5Xg-HV-d3S" firstAttribute="top" secondItem="d8h-2C-KJS" secondAttribute="bottom" constant="16" id="7yc-8i-VFy"/>
+                            <constraint firstItem="WuV-3G-Zs6" firstAttribute="bottom" secondItem="5Xg-HV-d3S" secondAttribute="bottom" constant="8" id="JPl-a1-ydv"/>
+                            <constraint firstItem="5Xg-HV-d3S" firstAttribute="leading" secondItem="WuV-3G-Zs6" secondAttribute="leading" constant="18" id="RWt-dh-nJ4"/>
+                            <constraint firstItem="WuV-3G-Zs6" firstAttribute="trailing" secondItem="5Xg-HV-d3S" secondAttribute="trailing" constant="16" id="d1k-bc-gSB"/>
+                            <constraint firstItem="d8h-2C-KJS" firstAttribute="top" secondItem="WuV-3G-Zs6" secondAttribute="top" id="rTi-hs-d7k"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Text" id="IQx-8V-Wmb">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="Dkm-eB-Cgq">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="oNr-U1-oA0" id="6tC-d3-5Bo"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="Dkm-eB-Cgq" id="lBe-bv-eLU"/>
+                        <outlet property="saveButton" destination="wp6-T3-Hl0" id="cdc-ZH-6cx"/>
+                        <outlet property="textButton" destination="8sR-U8-ISx" id="I5S-76-ze4"/>
+                        <outlet property="videoView" destination="d8h-2C-KJS" id="mIC-J4-eF5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4az-sP-L8I" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5133.5877862595416" y="-4.2253521126760569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="G4d-rb-Wzy">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gu5-et-nTx" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="tdt-6m-HiA">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="oNr-U1-oA0" kind="relationship" relationship="rootViewController" id="COp-py-3ln"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IFi-z5-VB0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4228.2442748091598" y="-4.2253521126760569"/>
+        </scene>
+        <!--Video Speed-->
+        <scene sceneID="Rvw-fO-5gt">
+            <objects>
+                <viewController storyboardIdentifier="VideoSpeedVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WD5-Ca-oas" customClass="VideoSpeedVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ggc-Dr-Fmd">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lh7-FG-TDE">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6e-TE-3eL">
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="timer.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="speedButtonTapped:" destination="WD5-Ca-oas" eventType="touchUpInside" id="U4X-jo-fIN"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y5U-bx-xlI">
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="WD5-Ca-oas" eventType="touchUpInside" id="azr-QU-Hh1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="3n1-SY-nlf"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JZA-Qt-fMT">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="CVE-O0-fZ5"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JZA-Qt-fMT" firstAttribute="leading" secondItem="CVE-O0-fZ5" secondAttribute="leading" id="DUy-Jq-SlW"/>
+                            <constraint firstItem="CVE-O0-fZ5" firstAttribute="trailing" secondItem="lh7-FG-TDE" secondAttribute="trailing" constant="16" id="Egd-YF-GTI"/>
+                            <constraint firstItem="JZA-Qt-fMT" firstAttribute="trailing" secondItem="CVE-O0-fZ5" secondAttribute="trailing" id="cLZ-fG-SL7"/>
+                            <constraint firstItem="CVE-O0-fZ5" firstAttribute="bottom" secondItem="lh7-FG-TDE" secondAttribute="bottom" constant="8" id="deA-Ve-ehj"/>
+                            <constraint firstItem="lh7-FG-TDE" firstAttribute="leading" secondItem="CVE-O0-fZ5" secondAttribute="leading" constant="18" id="sYN-SP-TqY"/>
+                            <constraint firstItem="JZA-Qt-fMT" firstAttribute="top" secondItem="CVE-O0-fZ5" secondAttribute="top" id="uKf-LF-ccN"/>
+                            <constraint firstItem="lh7-FG-TDE" firstAttribute="top" secondItem="JZA-Qt-fMT" secondAttribute="bottom" constant="16" id="xzq-d9-wUn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Speed" id="wzf-my-3fc">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="sC3-pb-iqG">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="WD5-Ca-oas" id="MVJ-lz-GkO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="sC3-pb-iqG" id="glX-e5-rhP"/>
+                        <outlet property="saveButton" destination="Y5U-bx-xlI" id="cWl-uK-i71"/>
+                        <outlet property="speedButton" destination="j6e-TE-3eL" id="fwB-20-gTI"/>
+                        <outlet property="videoView" destination="JZA-Qt-fMT" id="wG5-1X-1Vx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F7D-aK-Y25" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6730.5343511450383" y="-4.2253521126760569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="dN1-Sw-EZZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uPo-1T-gDH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="ahG-Dy-5Mm">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="WD5-Ca-oas" kind="relationship" relationship="rootViewController" id="qeV-e4-TCX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wt3-Wg-1yB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5826.7175572519081" y="-4.2253521126760569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="T91-Qp-jWj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IxG-sE-Qb6" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="rgJ-5X-xeg">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Zad-kq-5O2" kind="relationship" relationship="rootViewController" id="GKZ-ZO-O4D"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ape-JW-78q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-654.19847328244271" y="-12.67605633802817"/>
+        </scene>
+        <!--Video Cropping-->
+        <scene sceneID="DFZ-s8-mqO">
+            <objects>
+                <viewController storyboardIdentifier="VideoCroppingVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="we2-NH-9so" customClass="VideoCroppingVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4Vs-gj-sJ6">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BYO-jl-FNP">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0q5-uC-4Km">
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="crop" catalog="system"/>
+                                        <connections>
+                                            <action selector="cropButtonTapped:" destination="we2-NH-9so" eventType="touchUpInside" id="3tb-ab-ikM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2US-OM-Sho">
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="we2-NH-9so" eventType="touchUpInside" id="ar3-CN-6Lu"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="4jz-A0-6Te"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VuM-Cf-zIg">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="VJ9-zX-K9L"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="BYO-jl-FNP" firstAttribute="top" secondItem="VuM-Cf-zIg" secondAttribute="bottom" constant="16" id="0fI-PF-5zD"/>
+                            <constraint firstItem="BYO-jl-FNP" firstAttribute="leading" secondItem="VJ9-zX-K9L" secondAttribute="leading" constant="18" id="7C0-fC-aOn"/>
+                            <constraint firstItem="VuM-Cf-zIg" firstAttribute="leading" secondItem="VJ9-zX-K9L" secondAttribute="leading" id="9V6-gM-CVJ"/>
+                            <constraint firstItem="VuM-Cf-zIg" firstAttribute="top" secondItem="VJ9-zX-K9L" secondAttribute="top" id="TJd-Kz-nBQ"/>
+                            <constraint firstItem="VJ9-zX-K9L" firstAttribute="bottom" secondItem="BYO-jl-FNP" secondAttribute="bottom" constant="8" id="dMH-37-8Wt"/>
+                            <constraint firstItem="VJ9-zX-K9L" firstAttribute="trailing" secondItem="BYO-jl-FNP" secondAttribute="trailing" constant="16" id="oJy-XB-U84"/>
+                            <constraint firstItem="VuM-Cf-zIg" firstAttribute="trailing" secondItem="VJ9-zX-K9L" secondAttribute="trailing" id="qdQ-jT-iEb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Cropping" id="KaZ-Nz-OhY">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="2O2-6T-UjA">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="we2-NH-9so" id="4mO-b9-WaN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="2O2-6T-UjA" id="0kd-v4-jfQ"/>
+                        <outlet property="buttonStackView" destination="BYO-jl-FNP" id="CPx-eQ-cyT"/>
+                        <outlet property="cropButton" destination="0q5-uC-4Km" id="8O7-7M-vpS"/>
+                        <outlet property="saveButton" destination="2US-OM-Sho" id="5io-WQ-Xav"/>
+                        <outlet property="videoView" destination="VuM-Cf-zIg" id="vDv-fR-PbU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GFr-yd-5H2" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8295" y="-4"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="tLl-YC-zYW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Huo-FO-5Vq" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="x3o-cG-5WF">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="we2-NH-9so" kind="relationship" relationship="rootViewController" id="8HL-LB-cyt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d37-B0-eql" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7392" y="-4"/>
+        </scene>
+        <!--Video Sticker-->
+        <scene sceneID="Dor-Se-ho1">
+            <objects>
+                <viewController storyboardIdentifier="VideoStickerVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eyA-vj-cLk" customClass="VideoStickerVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="P9a-PV-SbS">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="eJ9-Vq-3Lg">
+                                <rect key="frame" x="18" y="760" width="359" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oSO-SN-fpV">
+                                        <rect key="frame" x="0.0" y="0.0" width="175.66666666666666" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="figure.highintensity.intervaltraining.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="stickerButtonTapped:" destination="eyA-vj-cLk" eventType="touchUpInside" id="Tqi-JK-cz4"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Mu-XU-Zfn">
+                                        <rect key="frame" x="183.66666666666663" y="0.0" width="175.33333333333337" height="50"/>
+                                        <color key="backgroundColor" red="0.36862745099999999" green="0.36862745099999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="square.and.arrow.up" catalog="system"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="eyA-vj-cLk" eventType="touchUpInside" id="IYt-FF-Cwg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="OMa-fj-mu2"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-q1-j2k">
+                                <rect key="frame" x="0.0" y="103" width="393" height="641"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="51O-2I-wVV"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RUJ-q1-j2k" firstAttribute="top" secondItem="51O-2I-wVV" secondAttribute="top" id="7BD-i7-rNs"/>
+                            <constraint firstItem="RUJ-q1-j2k" firstAttribute="trailing" secondItem="51O-2I-wVV" secondAttribute="trailing" id="HK3-DN-rwc"/>
+                            <constraint firstItem="eJ9-Vq-3Lg" firstAttribute="top" secondItem="RUJ-q1-j2k" secondAttribute="bottom" constant="16" id="flw-qr-fzh"/>
+                            <constraint firstItem="RUJ-q1-j2k" firstAttribute="leading" secondItem="51O-2I-wVV" secondAttribute="leading" id="oGz-UE-0Bk"/>
+                            <constraint firstItem="51O-2I-wVV" firstAttribute="trailing" secondItem="eJ9-Vq-3Lg" secondAttribute="trailing" constant="16" id="pj7-gU-DLd"/>
+                            <constraint firstItem="eJ9-Vq-3Lg" firstAttribute="leading" secondItem="51O-2I-wVV" secondAttribute="leading" constant="18" id="sJB-uR-PXN"/>
+                            <constraint firstItem="51O-2I-wVV" firstAttribute="bottom" secondItem="eJ9-Vq-3Lg" secondAttribute="bottom" constant="8" id="tp1-o6-3X8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Sticker" id="Ypx-LO-i6p">
+                        <barButtonItem key="leftBarButtonItem" image="folder.badge.plus" catalog="system" id="haK-6X-ZKK">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="addVideoButtonTapped:" destination="eyA-vj-cLk" id="85c-7b-90z"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addVideoButton" destination="haK-6X-ZKK" id="zIW-DV-rsg"/>
+                        <outlet property="saveButton" destination="3Mu-XU-Zfn" id="suE-dQ-23n"/>
+                        <outlet property="stickerButton" destination="oSO-SN-fpV" id="bxi-L8-AQj"/>
+                        <outlet property="videoView" destination="RUJ-q1-j2k" id="tJT-fG-dPe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hmq-fb-nEx" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9863" y="-4"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zvJ-UM-JKn">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UOT-S6-cr8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="9X7-9u-qLp">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="eyA-vj-cLk" kind="relationship" relationship="rootViewController" id="eVc-zg-fM9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Lx-tT-XiE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9022" y="-4"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="camera.filters" catalog="system" width="128" height="119"/>
+        <image name="crop" catalog="system" width="128" height="116"/>
+        <image name="figure.highintensity.intervaltraining.circle" catalog="system" width="128" height="123"/>
+        <image name="folder.badge.plus" catalog="system" width="128" height="93"/>
+        <image name="music.note" catalog="system" width="96" height="128"/>
+        <image name="speaker.wave.2.fill" catalog="system" width="128" height="88"/>
+        <image name="square.and.arrow.up" catalog="system" width="110" height="128"/>
+        <image name="t.square.fill" catalog="system" width="128" height="114"/>
+        <image name="timer.circle" catalog="system" width="128" height="123"/>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

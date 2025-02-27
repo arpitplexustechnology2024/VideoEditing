@@ -6,6 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */; };
+		BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */; };
+		BD9C78CE2D6F155400BFBE7F /* Sad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */; };
+		BD9C78CF2D6F155400BFBE7F /* ArjitSingh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */; };
+		BD9C78D02D6F155400BFBE7F /* Love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CB2D6F155400BFBE7F /* Love.mp3 */; };
+		BD9C78D12D6F155400BFBE7F /* VedhaDialogue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CD2D6F155400BFBE7F /* VedhaDialogue.mp3 */; };
+		BD9C78D22D6F155400BFBE7F /* Attitude.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CA2D6F155400BFBE7F /* Attitude.mp3 */; };
+		BD9C78D62D6F346C00BFBE7F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78D52D6F346C00BFBE7F /* Extension.swift */; };
+		BD9C78D82D6F39D700BFBE7F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78D72D6F39D600BFBE7F /* File.swift */; };
+		BDB4622A2D6ECB6F006158D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462202D6ECB6F006158D7 /* AppDelegate.swift */; };
+		BDB4622B2D6ECB6F006158D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462272D6ECB6F006158D7 /* SceneDelegate.swift */; };
+		BDB4622C2D6ECB6F006158D7 /* VideoEditingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462282D6ECB6F006158D7 /* VideoEditingVC.swift */; };
+		BDB4622D2D6ECB6F006158D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDB462212D6ECB6F006158D7 /* Assets.xcassets */; };
+		BDB4622F2D6ECB6F006158D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */; };
+		BDB462302D6ECB6F006158D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB462262D6ECB6F006158D7 /* Main.storyboard */; };
+		BDB462332D6ECB72006158D7 /* VideoEditingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462312D6ECB72006158D7 /* VideoEditingTests.swift */; };
+		BDB462372D6ECB75006158D7 /* VideoEditingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462342D6ECB75006158D7 /* VideoEditingUITests.swift */; };
+		BDB462382D6ECB75006158D7 /* VideoEditingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462352D6ECB75006158D7 /* VideoEditingUITestsLaunchTests.swift */; };
+		BDC7EE152D701EA8001AFEA7 /* VideoFilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE142D701EA8001AFEA7 /* VideoFilterVC.swift */; };
+		BDC7EE172D7035BE001AFEA7 /* VideoTextVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE162D7035BE001AFEA7 /* VideoTextVC.swift */; };
+		BDC7EE1A2D7037B4001AFEA7 /* TextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE182D7037B4001AFEA7 /* TextEditorView.swift */; };
+		BDC7EE1B2D7037B4001AFEA7 /* DraggableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE192D7037B4001AFEA7 /* DraggableTextView.swift */; };
+		BDC7EE1D2D7060BB001AFEA7 /* VideoSpeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE1C2D7060BB001AFEA7 /* VideoSpeedVC.swift */; };
+		BDC7EE1F2D706519001AFEA7 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE1E2D706519001AFEA7 /* HomeVC.swift */; };
+		BDC7EE212D70766A001AFEA7 /* VideoCroppingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE202D70766A001AFEA7 /* VideoCroppingVC.swift */; };
+		BDC7EE232D7079BA001AFEA7 /* VideoStickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE222D7079BA001AFEA7 /* VideoStickerVC.swift */; };
+		BDC7EE262D707AE6001AFEA7 /* DraggableStickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE252D707AE6001AFEA7 /* DraggableStickerView.swift */; };
+		BDC7EE272D707AE6001AFEA7 /* StickerBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE242D707AE6001AFEA7 /* StickerBottomView.swift */; };
+		BDC7EE292D707B12001AFEA7 /* StickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EE282D707B12001AFEA7 /* StickerCell.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		BDB462032D6ECB69006158D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,41 +56,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmerThumb.swift; sourceTree = "<group>"; };
+		BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmer.swift; sourceTree = "<group>"; };
+		BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ArjitSingh.mp3; sourceTree = "<group>"; };
+		BD9C78CA2D6F155400BFBE7F /* Attitude.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Attitude.mp3; sourceTree = "<group>"; };
+		BD9C78CB2D6F155400BFBE7F /* Love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Love.mp3; sourceTree = "<group>"; };
+		BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Sad.mp3; sourceTree = "<group>"; };
+		BD9C78CD2D6F155400BFBE7F /* VedhaDialogue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = VedhaDialogue.mp3; sourceTree = "<group>"; };
+		BD9C78D52D6F346C00BFBE7F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		BD9C78D72D6F39D600BFBE7F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		BDB461EC2D6ECB67006158D7 /* VideoEditing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoEditing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB462022D6ECB69006158D7 /* VideoEditingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoEditingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB4620C2D6ECB69006158D7 /* VideoEditingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoEditingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDB462202D6ECB6F006158D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BDB462212D6ECB6F006158D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BDB462222D6ECB6F006158D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDB462232D6ECB6F006158D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BDB462252D6ECB6F006158D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BDB462272D6ECB6F006158D7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		BDB462282D6ECB6F006158D7 /* VideoEditingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditingVC.swift; sourceTree = "<group>"; };
+		BDB462312D6ECB72006158D7 /* VideoEditingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditingTests.swift; sourceTree = "<group>"; };
+		BDB462342D6ECB75006158D7 /* VideoEditingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditingUITests.swift; sourceTree = "<group>"; };
+		BDB462352D6ECB75006158D7 /* VideoEditingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoEditingUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		BDC7EE142D701EA8001AFEA7 /* VideoFilterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFilterVC.swift; sourceTree = "<group>"; };
+		BDC7EE162D7035BE001AFEA7 /* VideoTextVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTextVC.swift; sourceTree = "<group>"; };
+		BDC7EE182D7037B4001AFEA7 /* TextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorView.swift; sourceTree = "<group>"; };
+		BDC7EE192D7037B4001AFEA7 /* DraggableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableTextView.swift; sourceTree = "<group>"; };
+		BDC7EE1C2D7060BB001AFEA7 /* VideoSpeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSpeedVC.swift; sourceTree = "<group>"; };
+		BDC7EE1E2D706519001AFEA7 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		BDC7EE202D70766A001AFEA7 /* VideoCroppingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCroppingVC.swift; sourceTree = "<group>"; };
+		BDC7EE222D7079BA001AFEA7 /* VideoStickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStickerVC.swift; sourceTree = "<group>"; };
+		BDC7EE242D707AE6001AFEA7 /* StickerBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerBottomView.swift; sourceTree = "<group>"; };
+		BDC7EE252D707AE6001AFEA7 /* DraggableStickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableStickerView.swift; sourceTree = "<group>"; };
+		BDC7EE282D707B12001AFEA7 /* StickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		BDB462142D6ECB69006158D7 /* Exceptions for "VideoEditing" folder in "VideoEditing" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = BDB461EB2D6ECB67006158D7 /* VideoEditing */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		BDB461EE2D6ECB67006158D7 /* VideoEditing */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				BDB462142D6ECB69006158D7 /* Exceptions for "VideoEditing" folder in "VideoEditing" target */,
-			);
-			path = VideoEditing;
-			sourceTree = "<group>";
-		};
-		BDB462052D6ECB69006158D7 /* VideoEditingTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VideoEditingTests;
-			sourceTree = "<group>";
-		};
-		BDB4620F2D6ECB69006158D7 /* VideoEditingUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VideoEditingUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		BDB461E92D6ECB67006158D7 /* Frameworks */ = {
@@ -85,12 +116,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD9C78C82D6F154200BFBE7F /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */,
+				BD9C78CA2D6F155400BFBE7F /* Attitude.mp3 */,
+				BD9C78CB2D6F155400BFBE7F /* Love.mp3 */,
+				BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */,
+				BD9C78CD2D6F155400BFBE7F /* VedhaDialogue.mp3 */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
 		BDB461E32D6ECB67006158D7 = {
 			isa = PBXGroup;
 			children = (
-				BDB461EE2D6ECB67006158D7 /* VideoEditing */,
-				BDB462052D6ECB69006158D7 /* VideoEditingTests */,
-				BDB4620F2D6ECB69006158D7 /* VideoEditingUITests */,
+				BDB462292D6ECB6F006158D7 /* VideoEditing */,
+				BDB462322D6ECB72006158D7 /* VideoEditingTests */,
+				BDB462362D6ECB75006158D7 /* VideoEditingUITests */,
 				BDB461ED2D6ECB67006158D7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,6 +146,53 @@
 				BDB4620C2D6ECB69006158D7 /* VideoEditingUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BDB462292D6ECB6F006158D7 /* VideoEditing */ = {
+			isa = PBXGroup;
+			children = (
+				BDB462202D6ECB6F006158D7 /* AppDelegate.swift */,
+				BDB462272D6ECB6F006158D7 /* SceneDelegate.swift */,
+				BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */,
+				BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */,
+				BDB462282D6ECB6F006158D7 /* VideoEditingVC.swift */,
+				BD9C78D72D6F39D600BFBE7F /* File.swift */,
+				BD9C78D52D6F346C00BFBE7F /* Extension.swift */,
+				BD9C78C82D6F154200BFBE7F /* Music */,
+				BDB462262D6ECB6F006158D7 /* Main.storyboard */,
+				BDC7EE202D70766A001AFEA7 /* VideoCroppingVC.swift */,
+				BDC7EE242D707AE6001AFEA7 /* StickerBottomView.swift */,
+				BDC7EE252D707AE6001AFEA7 /* DraggableStickerView.swift */,
+				BDC7EE282D707B12001AFEA7 /* StickerCell.swift */,
+				BDC7EE222D7079BA001AFEA7 /* VideoStickerVC.swift */,
+				BDC7EE1E2D706519001AFEA7 /* HomeVC.swift */,
+				BDC7EE142D701EA8001AFEA7 /* VideoFilterVC.swift */,
+				BDC7EE182D7037B4001AFEA7 /* TextEditorView.swift */,
+				BDC7EE192D7037B4001AFEA7 /* DraggableTextView.swift */,
+				BDC7EE162D7035BE001AFEA7 /* VideoTextVC.swift */,
+				BDC7EE1C2D7060BB001AFEA7 /* VideoSpeedVC.swift */,
+				BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */,
+				BDB462222D6ECB6F006158D7 /* Info.plist */,
+				BDB462212D6ECB6F006158D7 /* Assets.xcassets */,
+			);
+			path = VideoEditing;
+			sourceTree = "<group>";
+		};
+		BDB462322D6ECB72006158D7 /* VideoEditingTests */ = {
+			isa = PBXGroup;
+			children = (
+				BDB462312D6ECB72006158D7 /* VideoEditingTests.swift */,
+			);
+			path = VideoEditingTests;
+			sourceTree = "<group>";
+		};
+		BDB462362D6ECB75006158D7 /* VideoEditingUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BDB462342D6ECB75006158D7 /* VideoEditingUITests.swift */,
+				BDB462352D6ECB75006158D7 /* VideoEditingUITestsLaunchTests.swift */,
+			);
+			path = VideoEditingUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,9 +209,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				BDB461EE2D6ECB67006158D7 /* VideoEditing */,
 			);
 			name = VideoEditing;
 			packageProductDependencies = (
@@ -143,9 +230,6 @@
 			dependencies = (
 				BDB462042D6ECB69006158D7 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				BDB462052D6ECB69006158D7 /* VideoEditingTests */,
-			);
 			name = VideoEditingTests;
 			packageProductDependencies = (
 			);
@@ -165,9 +249,6 @@
 			);
 			dependencies = (
 				BDB4620E2D6ECB69006158D7 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				BDB4620F2D6ECB69006158D7 /* VideoEditingUITests */,
 			);
 			name = VideoEditingUITests;
 			packageProductDependencies = (
@@ -225,6 +306,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB4622D2D6ECB6F006158D7 /* Assets.xcassets in Resources */,
+				BD9C78CE2D6F155400BFBE7F /* Sad.mp3 in Resources */,
+				BD9C78CF2D6F155400BFBE7F /* ArjitSingh.mp3 in Resources */,
+				BD9C78D02D6F155400BFBE7F /* Love.mp3 in Resources */,
+				BD9C78D12D6F155400BFBE7F /* VedhaDialogue.mp3 in Resources */,
+				BD9C78D22D6F155400BFBE7F /* Attitude.mp3 in Resources */,
+				BDB4622F2D6ECB6F006158D7 /* LaunchScreen.storyboard in Resources */,
+				BDB462302D6ECB6F006158D7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +338,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */,
+				BDC7EE292D707B12001AFEA7 /* StickerCell.swift in Sources */,
+				BDC7EE1A2D7037B4001AFEA7 /* TextEditorView.swift in Sources */,
+				BDC7EE212D70766A001AFEA7 /* VideoCroppingVC.swift in Sources */,
+				BDC7EE1D2D7060BB001AFEA7 /* VideoSpeedVC.swift in Sources */,
+				BDC7EE1B2D7037B4001AFEA7 /* DraggableTextView.swift in Sources */,
+				BDC7EE262D707AE6001AFEA7 /* DraggableStickerView.swift in Sources */,
+				BDC7EE272D707AE6001AFEA7 /* StickerBottomView.swift in Sources */,
+				BDC7EE1F2D706519001AFEA7 /* HomeVC.swift in Sources */,
+				BDB4622A2D6ECB6F006158D7 /* AppDelegate.swift in Sources */,
+				BDC7EE232D7079BA001AFEA7 /* VideoStickerVC.swift in Sources */,
+				BD9C78D82D6F39D700BFBE7F /* File.swift in Sources */,
+				BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */,
+				BDC7EE152D701EA8001AFEA7 /* VideoFilterVC.swift in Sources */,
+				BD9C78D62D6F346C00BFBE7F /* Extension.swift in Sources */,
+				BDC7EE172D7035BE001AFEA7 /* VideoTextVC.swift in Sources */,
+				BDB4622B2D6ECB6F006158D7 /* SceneDelegate.swift in Sources */,
+				BDB4622C2D6ECB6F006158D7 /* VideoEditingVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB462332D6ECB72006158D7 /* VideoEditingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +371,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB462372D6ECB75006158D7 /* VideoEditingUITests.swift in Sources */,
+				BDB462382D6ECB75006158D7 /* VideoEditingUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +391,25 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDB462232D6ECB6F006158D7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		BDB462262D6ECB6F006158D7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDB462252D6ECB6F006158D7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		BDB462162D6ECB69006158D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -297,6 +426,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,6 +455,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -390,7 +521,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -447,7 +578,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -465,7 +596,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.VideoEditingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -484,7 +615,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.VideoEditingTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -502,6 +633,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.VideoEditingUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -519,6 +651,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.VideoEditingUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
