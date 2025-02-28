@@ -10,6 +10,7 @@
 		BD0EA53F2D717468005667A4 /* VideoCaptureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */; };
 		BD0EA5412D7174E4005667A4 /* VideoCaptureShowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */; };
 		BD0EA6502D71D2E5005667A4 /* MusicBottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */; };
+		BD0EA6522D71E014005667A4 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA6512D71E014005667A4 /* File.swift */; };
 		BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */; };
 		BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */; };
 		BD9C78CE2D6F155400BFBE7F /* Sad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */; };
@@ -18,7 +19,6 @@
 		BD9C78D12D6F155400BFBE7F /* VedhaDialogue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CD2D6F155400BFBE7F /* VedhaDialogue.mp3 */; };
 		BD9C78D22D6F155400BFBE7F /* Attitude.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CA2D6F155400BFBE7F /* Attitude.mp3 */; };
 		BD9C78D62D6F346C00BFBE7F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78D52D6F346C00BFBE7F /* Extension.swift */; };
-		BD9C78D82D6F39D700BFBE7F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78D72D6F39D600BFBE7F /* File.swift */; };
 		BDB4622A2D6ECB6F006158D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462202D6ECB6F006158D7 /* AppDelegate.swift */; };
 		BDB4622B2D6ECB6F006158D7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462272D6ECB6F006158D7 /* SceneDelegate.swift */; };
 		BDB4622C2D6ECB6F006158D7 /* VideoEditingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB462282D6ECB6F006158D7 /* VideoEditingVC.swift */; };
@@ -63,6 +63,7 @@
 		BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureVC.swift; sourceTree = "<group>"; };
 		BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureShowVC.swift; sourceTree = "<group>"; };
 		BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBottomSheetVC.swift; sourceTree = "<group>"; };
+		BD0EA6512D71E014005667A4 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmerThumb.swift; sourceTree = "<group>"; };
 		BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmer.swift; sourceTree = "<group>"; };
 		BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ArjitSingh.mp3; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Sad.mp3; sourceTree = "<group>"; };
 		BD9C78CD2D6F155400BFBE7F /* VedhaDialogue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = VedhaDialogue.mp3; sourceTree = "<group>"; };
 		BD9C78D52D6F346C00BFBE7F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		BD9C78D72D6F39D600BFBE7F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		BDB461EC2D6ECB67006158D7 /* VideoEditing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoEditing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB462022D6ECB69006158D7 /* VideoEditingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoEditingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB4620C2D6ECB69006158D7 /* VideoEditingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VideoEditingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,10 +177,10 @@
 				BDC7EE282D707B12001AFEA7 /* StickerCell.swift */,
 				BDC7EE142D701EA8001AFEA7 /* VideoFilterVC.swift */,
 				BD9C78D52D6F346C00BFBE7F /* Extension.swift */,
-				BD9C78D72D6F39D600BFBE7F /* File.swift */,
 				BD9C78C82D6F154200BFBE7F /* Music */,
 				BDB462262D6ECB6F006158D7 /* Main.storyboard */,
 				BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */,
+				BD0EA6512D71E014005667A4 /* File.swift */,
 				BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */,
 				BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */,
 				BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */,
@@ -359,13 +359,13 @@
 				BDC7EE2B2D708967001AFEA7 /* MusicCell.swift in Sources */,
 				BDC7EE1B2D7037B4001AFEA7 /* DraggableTextView.swift in Sources */,
 				BD0EA53F2D717468005667A4 /* VideoCaptureVC.swift in Sources */,
+				BD0EA6522D71E014005667A4 /* File.swift in Sources */,
 				BDC7EE262D707AE6001AFEA7 /* DraggableStickerView.swift in Sources */,
 				BDC7EE272D707AE6001AFEA7 /* StickerBottomView.swift in Sources */,
 				BDC7EE1F2D706519001AFEA7 /* HomeVC.swift in Sources */,
 				BD0EA5412D7174E4005667A4 /* VideoCaptureShowVC.swift in Sources */,
 				BDB4622A2D6ECB6F006158D7 /* AppDelegate.swift in Sources */,
 				BDC7EE232D7079BA001AFEA7 /* VideoStickerVC.swift in Sources */,
-				BD9C78D82D6F39D700BFBE7F /* File.swift in Sources */,
 				BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */,
 				BDC7EE152D701EA8001AFEA7 /* VideoFilterVC.swift in Sources */,
 				BD9C78D62D6F346C00BFBE7F /* Extension.swift in Sources */,
