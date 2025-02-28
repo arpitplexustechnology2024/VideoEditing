@@ -23,6 +23,13 @@ class VideoCaptureVC: UIViewController {
     private let timerLabel = UILabel()
     private let torchButton = UIButton(type: .system)
     
+    private let timerButton = UIButton(type: .system)
+    private let countdownLabel = UILabel()
+    private var countdownTimer: Timer?
+    private var selectedTimerSeconds = 0
+    
+    private let countdownOverlay = UIView()
+    
     private var isRecording = false
     private var isFrontCameraActive = false
     private var isTorchActive = false
@@ -35,6 +42,7 @@ class VideoCaptureVC: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupCaptureSession()
+        setupCountdownOverlay()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +80,12 @@ class VideoCaptureVC: UIViewController {
         timerLabel.clipsToBounds = true
         timerLabel.isHidden = true
         
+        countdownLabel.translatesAutoresizingMaskIntoConstraints = false
+        countdownLabel.textColor = .white
+        countdownLabel.textAlignment = .center
+        countdownLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 80, weight: .bold)
+        countdownLabel.isHidden = true
+        
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.backgroundColor = .clear
         recordButton.layer.cornerRadius = 35
@@ -99,10 +113,19 @@ class VideoCaptureVC: UIViewController {
         torchButton.addTarget(self, action: #selector(torchButtonTapped), for: .touchUpInside)
         torchButton.isHidden = isFrontCameraActive
         
+        timerButton.setImage(UIImage(systemName: "timer"), for: .normal)
+        timerButton.tintColor = .white
+        timerButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        timerButton.layer.cornerRadius = 22
+        timerButton.translatesAutoresizingMaskIntoConstraints = false
+        timerButton.addTarget(self, action: #selector(timerButtonTapped), for: .touchUpInside)
+        
         view.addSubview(recordButton)
         view.addSubview(switchCameraButton)
         view.addSubview(timerLabel)
         view.addSubview(torchButton)
+        view.addSubview(timerButton)
+        view.addSubview(countdownLabel)
         recordButton.addSubview(recordButtonInner)
         
         NSLayoutConstraint.activate([
@@ -129,10 +152,37 @@ class VideoCaptureVC: UIViewController {
             torchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             torchButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             torchButton.widthAnchor.constraint(equalToConstant: 44),
-            torchButton.heightAnchor.constraint(equalToConstant: 44)
+            torchButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            timerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            timerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            timerButton.widthAnchor.constraint(equalToConstant: 44),
+            timerButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            countdownLabel.widthAnchor.constraint(equalToConstant: 150),
+            countdownLabel.heightAnchor.constraint(equalToConstant: 150)
         ])
         
         timerLabel.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    }
+    
+    private func setupCountdownOverlay() {
+        countdownOverlay.translatesAutoresizingMaskIntoConstraints = false
+        countdownOverlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        countdownOverlay.isHidden = true
+        
+        view.addSubview(countdownOverlay)
+        
+        NSLayoutConstraint.activate([
+            countdownOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+            countdownOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            countdownOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            countdownOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        view.bringSubviewToFront(countdownLabel)
     }
     
     // MARK: - Camera Setup Methods
@@ -342,12 +392,116 @@ class VideoCaptureVC: UIViewController {
         timerLabel.text = String(format: "%02d:%02d", minutes, seconds)
     }
     
-    // MARK: - Button Action Methods
+    // MARK: - Timer Button Methods
+    @objc private func timerButtonTapped() {
+        showTimerAlertSheet()
+    }
+    
+    private func showTimerAlertSheet() {
+        let alertController = UIAlertController(title: "Timer select", message: nil, preferredStyle: .actionSheet)
+        
+        for seconds in 1...10 {
+            let action = UIAlertAction(title: "\(seconds)", style: .default) { [weak self] _ in
+                self?.selectedTimerSeconds = seconds
+                
+                if seconds > 0 {
+                    self?.timerButton.setImage(UIImage(systemName: "timer.circle.fill"), for: .normal)
+                    self?.timerButton.tintColor = .systemBlue
+                } else {
+                    self?.timerButton.setImage(UIImage(systemName: "timer"), for: .normal)
+                    self?.timerButton.tintColor = .white
+                }
+            }
+            alertController.addAction(action)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = timerButton
+            popoverController.sourceRect = timerButton.bounds
+        }
+        
+        present(alertController, animated: true)
+    }
+    
+    private func startCountdown() {
+        guard selectedTimerSeconds > 0 else { return }
+        
+        recordButton.isEnabled = false
+        switchCameraButton.isEnabled = false
+        torchButton.isEnabled = false
+        timerButton.isEnabled = false
+        
+        countdownOverlay.isHidden = false
+        countdownLabel.isHidden = false
+        
+        var count = selectedTimerSeconds
+        countdownLabel.text = "\(count)"
+        countdownLabel.alpha = 1.0
+        
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            
+            count -= 1
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                self.countdownLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+                self.countdownLabel.alpha = 1.0
+            }) { _ in
+                self.countdownLabel.text = "\(count)"
+                
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.countdownLabel.transform = CGAffineTransform.identity
+                    self.countdownLabel.alpha = count > 0 ? 1.0 : 0.0
+                })
+            }
+            
+            if count == 0 {
+                timer.invalidate()
+                self.countdownTimer = nil
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.countdownLabel.isHidden = true
+                    self.countdownOverlay.isHidden = true
+                    self.recordButton.isEnabled = true
+                    self.switchCameraButton.isEnabled = true
+                    self.torchButton.isEnabled = true
+                    self.timerButton.isEnabled = true
+                    
+                    self.startRecording()
+                    
+                    self.selectedTimerSeconds = 0
+                    self.timerButton.setImage(UIImage(systemName: "timer"), for: .normal)
+                    self.timerButton.tintColor = .white
+                }
+            }
+        }
+    }
+    
+    // MARK: - Recording Methods
     @objc private func recordButtonTapped() {
         if isRecording {
             stopRecording()
         } else {
-            startRecording()
+            if let timer = countdownTimer, timer.isValid {
+                timer.invalidate()
+                countdownTimer = nil
+                countdownLabel.isHidden = true
+                countdownOverlay.isHidden = true
+                
+                recordButton.isEnabled = true
+                switchCameraButton.isEnabled = true
+                torchButton.isEnabled = true
+                timerButton.isEnabled = true
+            }
+            
+            if selectedTimerSeconds > 0 {
+                startCountdown()
+            } else {
+                startRecording()
+            }
         }
     }
     
