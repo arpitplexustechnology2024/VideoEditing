@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IxG-sE-Qb6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8ym-1M-Mc7">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -489,6 +489,38 @@
             </objects>
             <point key="canvasLocation" x="1083" y="708"/>
         </scene>
+        <!--Video Capture-->
+        <scene sceneID="9Py-HB-f2a">
+            <objects>
+                <viewController storyboardIdentifier="VideoCaptureVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JZs-Ik-P6r" customClass="VideoCaptureVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lta-2k-qEM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="d6i-cU-rqZ"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Video Capture" id="udN-My-xDK"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qYW-Mh-7gh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1327.4809160305342" y="1958.4507042253522"/>
+        </scene>
+        <!--Video Capture ShowVC-->
+        <scene sceneID="mdu-Pq-Z49">
+            <objects>
+                <viewController storyboardIdentifier="VideoCaptureShowVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PbK-pT-mbU" customClass="VideoCaptureShowVC" customModule="VideoEditing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Uw9-RA-h5B">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="nBZ-xb-blt"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="04v-vg-lxy"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GlC-Qs-n0b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1976" y="1958"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="T91-Qp-jWj">
             <objects>
@@ -687,6 +719,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Lx-tT-XiE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4228" y="708"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="YNf-5p-8A9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="8ym-1M-Mc7" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="blackTranslucent" id="KvA-86-uSm">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="JZs-Ik-P6r" kind="relationship" relationship="rootViewController" id="D5y-Pg-2Fx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ot-W3-2HT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="400.76335877862596" y="1958.4507042253522"/>
         </scene>
     </scenes>
     <resources>
