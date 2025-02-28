@@ -45,6 +45,7 @@ class VideoCaptureVC: UIViewController {
     private var selectedMusicURL: URL?
     private var audioPlayer: AVAudioPlayer?
     private var audioSession: AVAudioSession?
+    private var audioPlayerObserver: NSObjectProtocol?
     
     private var recordingTimer: Timer?
     private var elapsedSeconds = 0
@@ -79,6 +80,12 @@ class VideoCaptureVC: UIViewController {
         stopTimer()
         if isTorchActive {
             toggleTorch(on: false)
+        }
+        
+        // Remove audio player observer
+        if let observer = audioPlayerObserver {
+            NotificationCenter.default.removeObserver(observer)
+            audioPlayerObserver = nil
         }
     }
     
@@ -475,7 +482,13 @@ class VideoCaptureVC: UIViewController {
                 try audioSession?.setActive(true)
                 
                 audioPlayer = try AVAudioPlayer(contentsOf: selectedMusicURL)
+                audioPlayer?.numberOfLoops = -1
                 audioPlayer?.prepareToPlay()
+                
+                if let observer = audioPlayerObserver {
+                    NotificationCenter.default.removeObserver(observer)
+                    audioPlayerObserver = nil
+                }
             } catch {
                 print("Error setting up audio player: \(error.localizedDescription)")
             }
@@ -787,10 +800,34 @@ class VideoCaptureVC: UIViewController {
         }
         
         do {
-            try audioTrack.insertTimeRange(
-                CMTimeRange(start: .zero, duration: videoAsset.duration),
-                of: audioAsset.tracks(withMediaType: .audio)[0],
-                at: .zero)
+            let audioAssetTrack = audioAsset.tracks(withMediaType: .audio)[0]
+            
+            if videoAsset.duration.seconds > audioAsset.duration.seconds {
+                var currentTime = CMTime.zero
+                
+                while currentTime < videoAsset.duration {
+                    let timeRangeToInsert: CMTimeRange
+                    
+                    if CMTimeAdd(currentTime, audioAsset.duration) > videoAsset.duration {
+                        let remainingTime = CMTimeSubtract(videoAsset.duration, currentTime)
+                        timeRangeToInsert = CMTimeRange(start: .zero, duration: remainingTime)
+                    } else {
+                        timeRangeToInsert = CMTimeRange(start: .zero, duration: audioAsset.duration)
+                    }
+                    
+                    try audioTrack.insertTimeRange(
+                        CMTimeRange(start: .zero, duration: timeRangeToInsert.duration),
+                        of: audioAssetTrack,
+                        at: currentTime)
+                    
+                    currentTime = CMTimeAdd(currentTime, timeRangeToInsert.duration)
+                }
+            } else {
+                try audioTrack.insertTimeRange(
+                    CMTimeRange(start: .zero, duration: videoAsset.duration),
+                    of: audioAssetTrack,
+                    at: .zero)
+            }
         } catch {
             print("Error inserting audio track: \(error)")
             completion(nil)

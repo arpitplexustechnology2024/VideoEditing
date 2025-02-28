@@ -91,6 +91,8 @@ class MusicSelectionBottomSheetVC: UIViewController {
             
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.delegate = self
+                audioPlayer?.numberOfLoops = -1
                 audioPlayer?.prepareToPlay()
                 audioPlayer?.play()
                 
@@ -122,6 +124,21 @@ class MusicSelectionBottomSheetVC: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.dismiss(animated: true)
+        }
+    }
+}
+
+// MARK: - AVAudioPlayerDelegate
+extension MusicSelectionBottomSheetVC: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            player.currentTime = 0
+            player.play()
+            if let url = currentlyPlayingURL,
+               let index = musicFiles.firstIndex(of: url),
+               let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? MusicTableViewCell {
+                cell.updatePlayPauseButton(isPlaying: true)
+            }
         }
     }
 }
