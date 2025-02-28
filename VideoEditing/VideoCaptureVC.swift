@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 
 // MARK: - VideoCaptureVC
+@available(iOS 15.0, *)
 class VideoCaptureVC: UIViewController {
     
     private var captureSession: AVCaptureSession?
@@ -24,9 +25,14 @@ class VideoCaptureVC: UIViewController {
     private let torchButton = UIButton(type: .system)
     
     private let timerButton = UIButton(type: .system)
+    private let speedButton = UIButton(type: .system)
+    private let musicButton = UIButton(type: .system)
+    private let filterButton = UIButton(type: .system)
+    
     private let countdownLabel = UILabel()
     private var countdownTimer: Timer?
     private var selectedTimerSeconds = 0
+    private var selectedSpeed: Float = 1.0
     
     private let countdownOverlay = UIView()
     
@@ -34,6 +40,11 @@ class VideoCaptureVC: UIViewController {
     private var isFrontCameraActive = false
     private var isTorchActive = false
     private var outputFileURL: URL?
+    
+    // MARK: - Add Selected Music properties
+    private var selectedMusicURL: URL?
+    private var audioPlayer: AVAudioPlayer?
+    private var audioSession: AVAudioSession?
     
     private var recordingTimer: Timer?
     private var elapsedSeconds = 0
@@ -52,6 +63,9 @@ class VideoCaptureVC: UIViewController {
             isTorchActive = false
             updateTorchButtonIcon()
         }
+        selectedSpeed = 1.0
+        speedButton.setImage(UIImage(systemName: "speedometer"), for: .normal)
+        speedButton.tintColor = .white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,11 +134,34 @@ class VideoCaptureVC: UIViewController {
         timerButton.translatesAutoresizingMaskIntoConstraints = false
         timerButton.addTarget(self, action: #selector(timerButtonTapped), for: .touchUpInside)
         
+        speedButton.setImage(UIImage(systemName: "speedometer"), for: .normal)
+        speedButton.tintColor = .white
+        speedButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        speedButton.layer.cornerRadius = 22
+        speedButton.translatesAutoresizingMaskIntoConstraints = false
+        speedButton.addTarget(self, action: #selector(speedButtonTapped), for: .touchUpInside)
+        
+        musicButton.setImage(UIImage(systemName: "music.note"), for: .normal)
+        musicButton.tintColor = .white
+        musicButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        musicButton.layer.cornerRadius = 22
+        musicButton.translatesAutoresizingMaskIntoConstraints = false
+        musicButton.addTarget(self, action: #selector(musicButtonTapped), for: .touchUpInside)
+        
+        filterButton.setImage(UIImage(systemName: "camera.filters"), for: .normal)
+        filterButton.tintColor = .white
+        filterButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        filterButton.layer.cornerRadius = 22
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(recordButton)
         view.addSubview(switchCameraButton)
         view.addSubview(timerLabel)
         view.addSubview(torchButton)
         view.addSubview(timerButton)
+        view.addSubview(speedButton)
+        view.addSubview(musicButton)
+        view.addSubview(filterButton)
         view.addSubview(countdownLabel)
         recordButton.addSubview(recordButtonInner)
         
@@ -158,6 +195,21 @@ class VideoCaptureVC: UIViewController {
             timerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             timerButton.widthAnchor.constraint(equalToConstant: 44),
             timerButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            speedButton.topAnchor.constraint(equalTo: timerButton.bottomAnchor, constant: 15),
+            speedButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            speedButton.widthAnchor.constraint(equalToConstant: 44),
+            speedButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            musicButton.topAnchor.constraint(equalTo: speedButton.bottomAnchor, constant: 15),
+            musicButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            musicButton.widthAnchor.constraint(equalToConstant: 44),
+            musicButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            filterButton.topAnchor.constraint(equalTo: musicButton.bottomAnchor, constant: 15),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            filterButton.widthAnchor.constraint(equalToConstant: 44),
+            filterButton.heightAnchor.constraint(equalToConstant: 44),
             
             countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -392,6 +444,44 @@ class VideoCaptureVC: UIViewController {
         timerLabel.text = String(format: "%02d:%02d", minutes, seconds)
     }
     
+    // MARK: - Music Button Action
+    @objc func musicButtonTapped() {
+        presentMusicSelectionBottomSheet()
+    }
+    
+    private func presentMusicSelectionBottomSheet() {
+        let musicSelectionVC = MusicSelectionBottomSheetVC()
+        musicSelectionVC.delegate = self
+        
+        if let selectedMusicURL = selectedMusicURL {
+            musicSelectionVC.selectedMusicURL = selectedMusicURL
+        }
+        
+        if let sheet = musicSelectionVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 20
+        }
+        
+        present(musicSelectionVC, animated: true)
+    }
+    
+    // MARK: - Set up audio for recording
+    private func setupAudioForRecording() {
+        if let selectedMusicURL = selectedMusicURL {
+            do {
+                audioSession = AVAudioSession.sharedInstance()
+                try audioSession?.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .defaultToSpeaker])
+                try audioSession?.setActive(true)
+                
+                audioPlayer = try AVAudioPlayer(contentsOf: selectedMusicURL)
+                audioPlayer?.prepareToPlay()
+            } catch {
+                print("Error setting up audio player: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     // MARK: - Timer Button Methods
     @objc private func timerButtonTapped() {
         showTimerAlertSheet()
@@ -426,6 +516,46 @@ class VideoCaptureVC: UIViewController {
         present(alertController, animated: true)
     }
     
+    // MARK: - Speed Button Methods
+    @objc private func speedButtonTapped() {
+        showSpeedAlertSheet()
+    }
+    
+    private func showSpeedAlertSheet() {
+        let alertController = UIAlertController(title: "Select Speed", message: nil, preferredStyle: .actionSheet)
+        
+        let speeds: [Float] = [0.5, 1.0, 1.5, 2.0, 3.0, 4.0]
+        
+        for speed in speeds {
+            let title = speed == 1.0 ? "Normal (1.0x)" : "\(speed)x"
+            let action = UIAlertAction(title: title, style: .default) { [weak self] _ in
+                self?.selectedSpeed = speed
+                self?.updateSpeedButtonUI()
+            }
+            alertController.addAction(action)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = speedButton
+            popoverController.sourceRect = speedButton.bounds
+        }
+        
+        present(alertController, animated: true)
+    }
+    
+    private func updateSpeedButtonUI() {
+        if selectedSpeed != 1.0 {
+            speedButton.setImage(UIImage(systemName: "speedometer"), for: .normal)
+            speedButton.tintColor = .systemBlue
+        } else {
+            speedButton.setImage(UIImage(systemName: "speedometer"), for: .normal)
+            speedButton.tintColor = .white
+        }
+    }
+    
     private func startCountdown() {
         guard selectedTimerSeconds > 0 else { return }
         
@@ -433,6 +563,8 @@ class VideoCaptureVC: UIViewController {
         switchCameraButton.isEnabled = false
         torchButton.isEnabled = false
         timerButton.isEnabled = false
+        speedButton.isEnabled = false
+        musicButton.isEnabled = false
         
         countdownOverlay.isHidden = false
         countdownLabel.isHidden = false
@@ -469,6 +601,8 @@ class VideoCaptureVC: UIViewController {
                     self.switchCameraButton.isEnabled = true
                     self.torchButton.isEnabled = true
                     self.timerButton.isEnabled = true
+                    self.speedButton.isEnabled = true
+                    self.musicButton.isEnabled = true
                     
                     self.startRecording()
                     
@@ -495,6 +629,8 @@ class VideoCaptureVC: UIViewController {
                 switchCameraButton.isEnabled = true
                 torchButton.isEnabled = true
                 timerButton.isEnabled = true
+                speedButton.isEnabled = true
+                musicButton.isEnabled = true
             }
             
             if selectedTimerSeconds > 0 {
@@ -547,8 +683,8 @@ class VideoCaptureVC: UIViewController {
         }
     }
     
-    // MARK: - Recording Methods
-    private func startRecording(continueFromURL: URL? = nil) {
+    // MARK: - Modified startRecording method to play music
+    func startRecording(continueFromURL: URL? = nil) {
         guard let videoOutput = videoOutput, !isRecording else { return }
         
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -572,6 +708,11 @@ class VideoCaptureVC: UIViewController {
             }
         }
         
+        if let player = audioPlayer {
+            player.currentTime = 0
+            player.play()
+        }
+        
         videoOutput.startRecording(to: fileURL, recordingDelegate: self)
         
         UIView.animate(withDuration: 0.3) {
@@ -587,9 +728,12 @@ class VideoCaptureVC: UIViewController {
         }
     }
     
-    private func stopRecording() {
+    // MARK: - Modified stopRecording to stop music playback
+    func stopRecording() {
         guard let videoOutput = videoOutput, isRecording else { return }
         videoOutput.stopRecording()
+        
+        audioPlayer?.stop()
         
         UIView.animate(withDuration: 0.3) {
             self.recordButtonInner.layer.cornerRadius = 30
@@ -600,6 +744,85 @@ class VideoCaptureVC: UIViewController {
         stopTimer()
     }
     
+    // MARK: - Modified mergeAudioAndVideo to preserve video orientation
+    func mergeAudioAndVideo(videoURL: URL, audioURL: URL, completion: @escaping (URL?) -> Void) {
+        let mixComposition = AVMutableComposition()
+        
+        guard let videoAsset = try? AVURLAsset(url: videoURL) else {
+            completion(nil)
+            return
+        }
+        
+        guard let videoTrack = mixComposition.addMutableTrack(
+            withMediaType: .video,
+            preferredTrackID: kCMPersistentTrackID_Invalid) else {
+            completion(nil)
+            return
+        }
+        
+        guard let audioAsset = try? AVURLAsset(url: audioURL) else {
+            completion(nil)
+            return
+        }
+        
+        guard let audioTrack = mixComposition.addMutableTrack(
+            withMediaType: .audio,
+            preferredTrackID: kCMPersistentTrackID_Invalid) else {
+            completion(nil)
+            return
+        }
+        
+        do {
+            let videoAssetTrack = videoAsset.tracks(withMediaType: .video)[0]
+            try videoTrack.insertTimeRange(
+                CMTimeRange(start: .zero, duration: videoAsset.duration),
+                of: videoAssetTrack,
+                at: .zero)
+            
+            videoTrack.preferredTransform = videoAssetTrack.preferredTransform
+        } catch {
+            print("Error inserting video track: \(error)")
+            completion(nil)
+            return
+        }
+        
+        do {
+            try audioTrack.insertTimeRange(
+                CMTimeRange(start: .zero, duration: videoAsset.duration),
+                of: audioAsset.tracks(withMediaType: .audio)[0],
+                at: .zero)
+        } catch {
+            print("Error inserting audio track: \(error)")
+            completion(nil)
+            return
+        }
+        
+        guard let exportSession = AVAssetExportSession(
+            asset: mixComposition,
+            presetName: AVAssetExportPresetHighestQuality) else {
+            completion(nil)
+            return
+        }
+        
+        let outputURL = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent("mergedVideo_\(Date().timeIntervalSince1970).mov")
+        
+        exportSession.outputURL = outputURL
+        exportSession.outputFileType = .mov
+        exportSession.shouldOptimizeForNetworkUse = true
+        
+        exportSession.exportAsynchronously {
+            DispatchQueue.main.async {
+                if exportSession.status == .completed {
+                    completion(outputURL)
+                } else {
+                    print("Export failed: \(exportSession.error?.localizedDescription ?? "unknown error")")
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer?.frame = view.layer.bounds
@@ -607,11 +830,22 @@ class VideoCaptureVC: UIViewController {
 }
 
 // MARK: - AVCaptureFileOutputRecordingDelegate Extension
-extension VideoCaptureVC: AVCaptureFileOutputRecordingDelegate {
+@available(iOS 15.0, *)
+extension VideoCaptureVC: AVCaptureFileOutputRecordingDelegate, MusicSelectionDelegate {
     func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
         print("Recording started")
     }
     
+    func didSelectMusic(url: URL) {
+        selectedMusicURL = url
+        setupAudioForRecording()
+        
+        DispatchQueue.main.async {
+            self.musicButton.tintColor = .systemGreen
+        }
+    }
+    
+    // MARK: - Modified fileOutput completion to handle music merging
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         if isRecording {
             return
@@ -626,19 +860,65 @@ extension VideoCaptureVC: AVCaptureFileOutputRecordingDelegate {
             toggleTorch(on: false)
         }
         
-        print("Recording successfully saved: \(outputFileURL.path)")
+        audioPlayer?.stop()
         
-        DispatchQueue.main.async {
-            if let storyboard = self.storyboard {
-                if let previewVC = storyboard.instantiateViewController(identifier: "VideoCaptureShowVC") as? VideoCaptureShowVC {
-                    previewVC.videoURL = outputFileURL
-                    previewVC.modalPresentationStyle = .fullScreen
-                    self.present(previewVC, animated: true)
-                } else {
-                    print("Could not instantiate VideoCaptureShowVC")
+        if let selectedMusicURL = selectedMusicURL {
+            DispatchQueue.main.async {
+                let loadingAlert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                let loadingIndicator = UIActivityIndicatorView(style: .large)
+                loadingIndicator.hidesWhenStopped = true
+                loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+                loadingIndicator.startAnimating()
+                
+                loadingAlert.view.addSubview(loadingIndicator)
+                
+                NSLayoutConstraint.activate([
+                    loadingIndicator.centerXAnchor.constraint(equalTo: loadingAlert.view.centerXAnchor),
+                    loadingIndicator.centerYAnchor.constraint(equalTo: loadingAlert.view.centerYAnchor),
+                    loadingIndicator.heightAnchor.constraint(equalToConstant: 50),
+                    loadingIndicator.widthAnchor.constraint(equalToConstant: 50)
+                ])
+                
+                loadingAlert.view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+                loadingAlert.view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+                
+                self.present(loadingAlert, animated: true, completion: nil)
+                
+                self.mergeAudioAndVideo(videoURL: outputFileURL, audioURL: selectedMusicURL) { mergedURL in
+                    DispatchQueue.main.async {
+                        loadingAlert.dismiss(animated: true) {
+                            if let mergedURL = mergedURL {
+                                if let storyboard = self.storyboard {
+                                    if let previewVC = storyboard.instantiateViewController(identifier: "VideoCaptureShowVC") as? VideoCaptureShowVC {
+                                        previewVC.videoURL = mergedURL
+                                        previewVC.playbackSpeed = self.selectedSpeed
+                                        previewVC.modalPresentationStyle = .fullScreen
+                                        self.present(previewVC, animated: true)
+                                    } else {
+                                        print("Could not instantiate VideoCaptureShowVC")
+                                    }
+                                }
+                            } else {
+                                let errorAlert = UIAlertController(title: "Error", message: "Error merging video and music", preferredStyle: .alert)
+                                errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                                self.present(errorAlert, animated: true)
+                            }
+                        }
+                    }
                 }
-            } else {
-                print("Storyboard not available")
+            }
+        } else {
+            DispatchQueue.main.async {
+                if let storyboard = self.storyboard {
+                    if let previewVC = storyboard.instantiateViewController(identifier: "VideoCaptureShowVC") as? VideoCaptureShowVC {
+                        previewVC.videoURL = outputFileURL
+                        previewVC.playbackSpeed = self.selectedSpeed
+                        previewVC.modalPresentationStyle = .fullScreen
+                        self.present(previewVC, animated: true)
+                    } else {
+                        print("Could not instantiate VideoCaptureShowVC")
+                    }
+                }
             }
         }
     }

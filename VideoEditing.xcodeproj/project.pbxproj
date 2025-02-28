@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BD0EA53F2D717468005667A4 /* VideoCaptureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */; };
 		BD0EA5412D7174E4005667A4 /* VideoCaptureShowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */; };
+		BD0EA6502D71D2E5005667A4 /* MusicBottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */; };
 		BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */; };
 		BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */; };
 		BD9C78CE2D6F155400BFBE7F /* Sad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */; };
@@ -61,6 +62,7 @@
 /* Begin PBXFileReference section */
 		BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureVC.swift; sourceTree = "<group>"; };
 		BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureShowVC.swift; sourceTree = "<group>"; };
+		BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBottomSheetVC.swift; sourceTree = "<group>"; };
 		BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmerThumb.swift; sourceTree = "<group>"; };
 		BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmer.swift; sourceTree = "<group>"; };
 		BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ArjitSingh.mp3; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				BD9C78C82D6F154200BFBE7F /* Music */,
 				BDB462262D6ECB6F006158D7 /* Main.storyboard */,
 				BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */,
+				BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */,
 				BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */,
 				BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */,
 				BDB462222D6ECB6F006158D7 /* Info.plist */,
@@ -348,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */,
+				BD0EA6502D71D2E5005667A4 /* MusicBottomSheetVC.swift in Sources */,
 				BDC7EE292D707B12001AFEA7 /* StickerCell.swift in Sources */,
 				BDC7EE1A2D7037B4001AFEA7 /* TextEditorView.swift in Sources */,
 				BDC7EE212D70766A001AFEA7 /* VideoCroppingVC.swift in Sources */,
