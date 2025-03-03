@@ -27,7 +27,6 @@ class VideoCaptureVC: UIViewController {
     private let timerButton = UIButton(type: .system)
     private let speedButton = UIButton(type: .system)
     private let musicButton = UIButton(type: .system)
-    private let filterButton = UIButton(type: .system)
     
     private let countdownLabel = UILabel()
     private var countdownTimer: Timer?
@@ -155,12 +154,6 @@ class VideoCaptureVC: UIViewController {
         musicButton.translatesAutoresizingMaskIntoConstraints = false
         musicButton.addTarget(self, action: #selector(musicButtonTapped), for: .touchUpInside)
         
-        filterButton.setImage(UIImage(systemName: "camera.filters"), for: .normal)
-        filterButton.tintColor = .white
-        filterButton.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        filterButton.layer.cornerRadius = 22
-        filterButton.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(recordButton)
         view.addSubview(switchCameraButton)
         view.addSubview(timerLabel)
@@ -168,7 +161,6 @@ class VideoCaptureVC: UIViewController {
         view.addSubview(timerButton)
         view.addSubview(speedButton)
         view.addSubview(musicButton)
-        view.addSubview(filterButton)
         view.addSubview(countdownLabel)
         recordButton.addSubview(recordButtonInner)
         
@@ -212,11 +204,6 @@ class VideoCaptureVC: UIViewController {
             musicButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             musicButton.widthAnchor.constraint(equalToConstant: 44),
             musicButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            filterButton.topAnchor.constraint(equalTo: musicButton.bottomAnchor, constant: 15),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            filterButton.widthAnchor.constraint(equalToConstant: 44),
-            filterButton.heightAnchor.constraint(equalToConstant: 44),
             
             countdownLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             countdownLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),

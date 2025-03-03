@@ -11,6 +11,7 @@
 		BD0EA5412D7174E4005667A4 /* VideoCaptureShowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */; };
 		BD0EA6502D71D2E5005667A4 /* MusicBottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */; };
 		BD0EA6522D71E014005667A4 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0EA6512D71E014005667A4 /* File.swift */; };
+		BD949C302D7571F3006F07C6 /* VideoPlayPauseCaptureVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD949C2F2D7571F3006F07C6 /* VideoPlayPauseCaptureVC.swift */; };
 		BD9C78C52D6EED7D00BFBE7F /* VideoTrimmerThumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */; };
 		BD9C78C72D6EED9D00BFBE7F /* VideoTrimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */; };
 		BD9C78CE2D6F155400BFBE7F /* Sad.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BD9C78CC2D6F155400BFBE7F /* Sad.mp3 */; };
@@ -64,6 +65,7 @@
 		BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureShowVC.swift; sourceTree = "<group>"; };
 		BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBottomSheetVC.swift; sourceTree = "<group>"; };
 		BD0EA6512D71E014005667A4 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		BD949C2F2D7571F3006F07C6 /* VideoPlayPauseCaptureVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayPauseCaptureVC.swift; sourceTree = "<group>"; };
 		BD9C78C42D6EED7D00BFBE7F /* VideoTrimmerThumb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmerThumb.swift; sourceTree = "<group>"; };
 		BD9C78C62D6EED9D00BFBE7F /* VideoTrimmer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoTrimmer.swift; sourceTree = "<group>"; };
 		BD9C78C92D6F155400BFBE7F /* ArjitSingh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ArjitSingh.mp3; sourceTree = "<group>"; };
@@ -179,8 +181,9 @@
 				BD9C78D52D6F346C00BFBE7F /* Extension.swift */,
 				BD9C78C82D6F154200BFBE7F /* Music */,
 				BDB462262D6ECB6F006158D7 /* Main.storyboard */,
-				BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */,
+				BD949C2F2D7571F3006F07C6 /* VideoPlayPauseCaptureVC.swift */,
 				BD0EA6512D71E014005667A4 /* File.swift */,
+				BD0EA53E2D717468005667A4 /* VideoCaptureVC.swift */,
 				BD0EA64F2D71D2E5005667A4 /* MusicBottomSheetVC.swift */,
 				BD0EA5402D7174E4005667A4 /* VideoCaptureShowVC.swift */,
 				BDB462242D6ECB6F006158D7 /* LaunchScreen.storyboard */,
@@ -363,6 +366,7 @@
 				BDC7EE262D707AE6001AFEA7 /* DraggableStickerView.swift in Sources */,
 				BDC7EE272D707AE6001AFEA7 /* StickerBottomView.swift in Sources */,
 				BDC7EE1F2D706519001AFEA7 /* HomeVC.swift in Sources */,
+				BD949C302D7571F3006F07C6 /* VideoPlayPauseCaptureVC.swift in Sources */,
 				BD0EA5412D7174E4005667A4 /* VideoCaptureShowVC.swift in Sources */,
 				BDB4622A2D6ECB6F006158D7 /* AppDelegate.swift in Sources */,
 				BDC7EE232D7079BA001AFEA7 /* VideoStickerVC.swift in Sources */,
@@ -437,11 +441,15 @@
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VideoEditing/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera to take videos.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to record voice notes";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to save videos to your gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to select videos.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -466,11 +474,15 @@
 				DEVELOPMENT_TEAM = 32BBNXD889;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VideoEditing/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires access to the camera to take videos.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app uses the microphone to record voice notes";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to save videos to your gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to select videos.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
